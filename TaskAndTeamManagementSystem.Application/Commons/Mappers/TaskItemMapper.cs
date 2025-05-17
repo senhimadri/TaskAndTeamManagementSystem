@@ -1,4 +1,5 @@
-﻿using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
+﻿using Microsoft.VisualBasic;
+using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Application.Commons.Mappers;
@@ -57,5 +58,34 @@ public static class TaskItemMapper
             CreatedByName: entity.CreatedByUser?.Name ?? "Unknown",
             TeamName: entity.Team?.Name ?? "Unknown"
         );
+    }
+
+    public static IQueryable<GetTaskItemByIdResponse> ToGetByIdResponse(this IQueryable<TaskItem> query)
+    {
+        return query.Select(entity => new GetTaskItemByIdResponse(
+             entity.Title,
+             entity.Description,
+             (int)entity.Status,
+             entity.Status.ToString(),
+             entity.DueDate,
+             entity.AssignedUserId,
+             entity.AssignedUser.Name ?? "Unknown",
+             entity.CreatedByUserId,
+             entity.CreatedByUser.Name ?? "Unknown",
+             entity.TeamId,
+             entity.Team.Name ?? "Unknown"
+        ));
+    }
+
+    public static IQueryable<GetTaskItemsListResponse> ToGetListResponse(this IQueryable<TaskItem> query)
+    {
+        return query.Select(entity => new GetTaskItemsListResponse(
+             entity.Id,
+             entity.Title,
+             entity.Status.ToString(),
+             entity.AssignedUser.Name ?? "Unknown",
+             entity.CreatedByUser.Name ?? "Unknown",
+             entity.Team.Name ?? "Unknown"
+        ));
     }
 }
