@@ -1,6 +1,7 @@
 using TaskAndTeamManagementSystem.Application;
 using TaskAndTeamManagementSystem.Persistence;
 using System.Threading.RateLimiting;
+using TaskAndTeamManagementSystem.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +41,9 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// Use essential middleware
+
 app.UseCors("AllowAll");
+app.UseGlobalExceptionMiddleware();
 app.UseRateLimiter();
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -51,3 +53,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

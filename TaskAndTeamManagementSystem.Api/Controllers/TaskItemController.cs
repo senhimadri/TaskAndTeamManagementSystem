@@ -12,7 +12,7 @@ namespace TaskAndTeamManagementSystem.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TaksItemController(IMediator _mediator) : ControllerBase
+public class TaskItemController(IMediator _mediator) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTaskItemPayload payload)
@@ -67,6 +67,6 @@ public class TaksItemController(IMediator _mediator) : ControllerBase
             onSuccess: () => Created(),
             onValidationFailure: validationErrors => ValidationProblem(validationErrors),
             onFailure: error => BadRequest(error)
-);
+        );
     }
 }
