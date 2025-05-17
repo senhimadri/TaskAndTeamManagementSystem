@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Endpoints\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="Endpoints\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Endpoints\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Endpoints\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,11 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Endpoints\" />
   </ItemGroup>
 
 </Project>

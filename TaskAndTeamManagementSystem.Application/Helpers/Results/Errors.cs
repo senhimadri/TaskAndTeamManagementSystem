@@ -2,8 +2,7 @@
 
 public static class Errors
 {
-    public static readonly Error ContentNotFound = new Error(404, "Content not found.");
-    public static readonly Error EmployeeNotFound = new Error(404, "Employee not found");
+    public static readonly Error TaskNotFound = new Error(404, "Task not found");
 
     public static readonly Error BadRequest = new Error(400, "Bad request.");
     public static readonly Error UnauthorizedAccess = new Error(401, "Unauthorized access.");
