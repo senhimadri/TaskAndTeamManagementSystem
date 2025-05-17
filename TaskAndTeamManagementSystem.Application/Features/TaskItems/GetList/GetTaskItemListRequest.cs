@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using TaskAndTeamManagementSystem.Application.Commons.QueryFilter;
+using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.CommonDtos;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 
@@ -9,11 +11,25 @@ public class GetTaskItemListRequest : IRequest<GetPaginationResponse<GetTaskItem
     public TaskItemPaginationQuery Query { get; set; } = default!;
 }
 
-public class GetTaskItemListRequestHandler : IRequestHandler<GetTaskItemListRequest, GetPaginationResponse<GetTaskItemsListResponse>>
+public class GetTaskItemListRequestHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetTaskItemListRequest, GetPaginationResponse<GetTaskItemsListResponse>>
 {
     public Task<GetPaginationResponse<GetTaskItemsListResponse>> Handle(GetTaskItemListRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+
+        ITaskItemQueryFilter taskItemFilterBuilder = new TaskItemQueryFilter();
+
+        //var taskItemFilter = employeeFilterBuilder
+        //                    .IncludeDepartmentIdList(request.DepartmentIds)
+        //                    .IncludeDesignationIdList(request.DesignationIds)
+        //                    .IncludeSearchText(request.SearchText)
+        //                    .Build();
+
+        //var employeeList = await unitOfWork.EmployeeRepository
+        //                .GetEmployeesWithDetails(employeeFilter)
+        //                .ToGetListResponse()
+        //                .ToListAsync();
+
+        return null;
     }
 }
 
