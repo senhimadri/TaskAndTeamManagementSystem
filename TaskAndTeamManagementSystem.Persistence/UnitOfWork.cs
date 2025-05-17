@@ -14,9 +14,6 @@ namespace TaskAndTeamManagementSystem.Persistence
 
         private IDbContextTransaction? _currentTransaction;
 
-        private IEmployeeRepository? _employeeRepository;
-
-        public IEmployeeRepository EmployeeRepository => _employeeRepository ??= new EmployeeRepository(_context);
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
                                 => await _context.SaveChangesAsync(cancellationToken);

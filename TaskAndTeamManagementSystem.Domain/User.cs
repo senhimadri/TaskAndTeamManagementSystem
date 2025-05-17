@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TaskAndTeamManagementSystem.Domain;
 
-namespace TaskAndTeamManagementSystem.Domain
+public class User : BaseDomain<Guid>
 {
-    internal class User
-    {
-    }
+    public string Name { get; set; } = default!;
+    public string Email { get; set; } = default!;
+
+    public ICollection<TaskItem> AssignedTasks { get; set; } = new List<TaskItem>();
+    public ICollection<TaskItem> CreatedTasks { get; set; } = new List<TaskItem>();
+
 }

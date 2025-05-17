@@ -4,7 +4,6 @@ namespace TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    IEmployeeRepository EmployeeRepository { get; }
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);

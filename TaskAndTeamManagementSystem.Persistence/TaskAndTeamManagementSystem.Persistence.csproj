@@ -18,8 +18,4 @@
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Domain\TaskAndTeamManagementSystem.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DomainConfigurations\" />
-  </ItemGroup>
-
 </Project>
