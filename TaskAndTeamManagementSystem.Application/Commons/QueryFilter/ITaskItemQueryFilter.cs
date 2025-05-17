@@ -10,7 +10,7 @@ public interface ITaskItemQueryFilter
     ITaskItemQueryFilter IncludeStatus(TaskStatus? Id);
     ITaskItemQueryFilter IncludeAssignedTo(Guid? Id);
     ITaskItemQueryFilter IncludeCreatedby(Guid? Id);
-    ITaskItemQueryFilter IncludeDueDate(DateTimeOffset frondate, DateTimeOffset todate);
+    ITaskItemQueryFilter IncludeDueDate(DateTimeOffset? frondate, DateTimeOffset? todate);
     Expression<Func<TaskItem, bool>> Build();
 }
 
@@ -32,7 +32,7 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
         return this;
     }
 
-    public ITaskItemQueryFilter IncludeDueDate(DateTimeOffset frondate, DateTimeOffset todate)
+    public ITaskItemQueryFilter IncludeDueDate(DateTimeOffset? frondate, DateTimeOffset? todate)
     {
         filter = filter.And(x => x.DueDate >= frondate && x.DueDate <= todate);
         return this;

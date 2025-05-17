@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
     <Compile Remove="Endpoints\**" />
-    <Content Remove="Controllers\**" />
     <Content Remove="Endpoints\**" />
-    <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="Endpoints\**" />
-    <None Remove="Controllers\**" />
     <None Remove="Endpoints\**" />
   </ItemGroup>
 
@@ -27,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

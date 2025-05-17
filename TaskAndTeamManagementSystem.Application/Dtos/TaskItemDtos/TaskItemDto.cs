@@ -1,4 +1,5 @@
 ﻿using TaskAndTeamManagementSystem.Domain;
+using TaskStatus = TaskAndTeamManagementSystem.Domain.TaskStatus;
 
 namespace TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 
@@ -35,8 +36,9 @@ public record GetTaskItemsListResponse( long Id,
                                         string CreatedByName,
                                         string TeamName);
 
-public record TaskItemPaginationQuery(string? SearchText,int StatusId,
-                                      Guid AssignedUserId,
+public record TaskItemPaginationQuery(string? SearchText,TaskStatus StatusId,
+                                      Guid? AssignedUserId,
+                                      Guid? CreatedById,
                                       int TeamId,
                                       int PageNo,
                                       int PageSize,
