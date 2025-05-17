@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TaskAndTeamManagementSystem.Api.Helpers;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
-using TaskAndTeamManagementSystem.Application.Dtos.UserDtos;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Delete;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.GetById;
@@ -18,16 +18,24 @@ public class TaksItemController(IMediator _mediator) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateTaskItemPayload payload)
     {
         var command = new CreateTaskItemCommand { Payload = payload };
-        await _mediator.Send(command);
-        return Created(string.Empty, null);
+        var response = await _mediator.Send(command);
+        return response.Match(
+            onSuccess: () => Created(),
+            onValidationFailure: validationErrors => ValidationProblem(validationErrors),
+            onFailure: error => BadRequest(error)
+);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] UpdateTaskItemPayload payload)
     {
         var command = new UpdateTaskItemCommand { Id = id, Payload = payload };
-        await _mediator.Send(command);
-        return NoContent();
+        var response = await _mediator.Send(command);
+        return response.Match(
+              onSuccess: () => NoContent(),
+              onValidationFailure: validationErrors => ValidationProblem(validationErrors),
+              onFailure: error => BadRequest(error)
+);
     }
 
     [HttpGet("{id}")]
@@ -54,7 +62,11 @@ public class TaksItemController(IMediator _mediator) : ControllerBase
     public async Task<IActionResult> Delete(long id)
     {
         var command = new DeleteTaskItemCommand { Id = id };
-        await _mediator.Send(command);
-        return NoContent();
+        var response = await _mediator.Send(command);
+        return response.Match(
+            onSuccess: () => Created(),
+            onValidationFailure: validationErrors => ValidationProblem(validationErrors),
+            onFailure: error => BadRequest(error)
+);
     }
 }
