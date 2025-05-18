@@ -1,5 +1,6 @@
 using TaskAndTeamManagementSystem.Application;
 using TaskAndTeamManagementSystem.Persistence;
+using TaskAndTeamManagementSystem.Infrastructure;
 using System.Threading.RateLimiting;
 using TaskAndTeamManagementSystem.Api.Middlewares;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -41,10 +43,11 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-
 app.UseCors("AllowAll");
 app.UseGlobalExceptionMiddleware();
 app.UseRateLimiter();
+
+app.UseRequestResponseLogging();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();

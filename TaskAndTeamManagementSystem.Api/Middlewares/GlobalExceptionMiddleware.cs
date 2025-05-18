@@ -1,4 +1,6 @@
-﻿namespace TaskAndTeamManagementSystem.Api.Middlewares
+﻿using Serilog;
+
+namespace TaskAndTeamManagementSystem.Api.Middlewares
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class GlobalExceptionMiddleware
@@ -21,39 +23,38 @@
             catch (Exception ex)
             {
 
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                var statusCode = StatusCodes.Status500InternalServerError;
+                context.Response.StatusCode = statusCode;
                 context.Response.ContentType = "application/json";
+
+                Log.Error(ex, "❌ Exception at {Path}", context.Request.Path);
 
                 if (_env.IsDevelopment())
                 {
                     var devResponse = new
                     {
-                        StatusCode = context.Response.StatusCode,
+                        StatusCode = statusCode,
                         Message = ex.Message,
                         StackTrace = ex.StackTrace,
                         Source = ex.Source,
                         ExceptionType = ex.GetType().Name
                     };
+
+                    Log.Information("⬅️ Response: {@Response}", devResponse);
                     await context.Response.WriteAsJsonAsync(devResponse);
                 }
                 else
                 {
                     var prodResponse = new
                     {
-                        StatusCode = context.Response.StatusCode,
+                        StatusCode = statusCode,
                         Message = "An unexpected error occurred. Please try again later."
                     };
+
+                    Log.Information("⬅️ Response: {@Response}", prodResponse);
                     await context.Response.WriteAsJsonAsync(prodResponse);
                 }
             }
-        }
-    }
-
-    public static class MiddlewareExtensions
-    {
-        public static IApplicationBuilder UseGlobalExceptionMiddleware(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<GlobalExceptionMiddleware>();
         }
     }
 }
