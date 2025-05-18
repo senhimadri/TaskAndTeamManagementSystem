@@ -66,7 +66,7 @@ public static class TaskItemMapper
              entity.Title,
              entity.Description,
              (int)entity.Status,
-             entity.Status.ToString(),
+             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : entity.Status == Domain.TaskStatus.InProgress ? "In Progress" : "Done",
              entity.DueDate,
              entity.AssignedUserId,
              entity.AssignedUser.Name ?? "Unknown",
@@ -82,10 +82,10 @@ public static class TaskItemMapper
         return query.Select(entity => new GetTaskItemsListResponse(
              entity.Id,
              entity.Title,
-             entity.Status.ToString(),
-             entity.AssignedUser.Name ?? "Unknown",
-             entity.CreatedByUser.Name ?? "Unknown",
-             entity.Team.Name ?? "Unknown"
+             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : entity.Status == Domain.TaskStatus.InProgress ? "In Progress" : "Done",
+             entity.AssignedUser.Name,
+             entity.CreatedByUser.Name,
+             entity.Team.Name
         ));
     }
 }

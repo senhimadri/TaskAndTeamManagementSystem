@@ -12,7 +12,7 @@ using TaskAndTeamManagementSystem.Persistence;
 namespace TaskAndTeamManagementSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250517065221_InitialScript")]
+    [Migration("20250517231617_InitialScript")]
     partial class InitialScript
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("DueDate")
+                    b.Property<DateTimeOffset?>("DueDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsDelete")
@@ -104,6 +104,16 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "This is a test team.",
+                            IsDelete = false,
+                            Name = "Test Team"
+                        });
                 });
 
             modelBuilder.Entity("TaskAndTeamManagementSystem.Domain.User", b =>
@@ -132,6 +142,32 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreateAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "test.admin@tms.com",
+                            IsDelete = false,
+                            Name = "Test Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreateAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "test.manager@tms.com",
+                            IsDelete = false,
+                            Name = "Test Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CreateAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "test.employee@tms.com",
+                            IsDelete = false,
+                            Name = "Test Employee"
+                        });
                 });
 
             modelBuilder.Entity("TaskAndTeamManagementSystem.Domain.TaskItem", b =>

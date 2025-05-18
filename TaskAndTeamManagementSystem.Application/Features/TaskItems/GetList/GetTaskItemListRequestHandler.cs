@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using System.Linq.Expressions;
 using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 using TaskAndTeamManagementSystem.Application.Commons.QueryFilter;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.CommonDtos;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.GetList;
 
@@ -22,8 +24,9 @@ public class GetTaskItemListRequestHandler(IUnitOfWork unitOfWork) : IRequestHan
                             .IncludeDueDate(request.Query.FromDate , request.Query.ToDate)
                             .Build();
 
+
         var employeeList = await unitOfWork.TaskItemRepository
-                        .TaskItemDetails(taskItemFilter)
+                        .TaskItemDetails(taskItemFilter,orderBy: x => x.Id , request.Query.IsAscending)
                         .ToGetListResponse()
                         .ToPaginatedResultAsync(request.Query.PageNo, request.Query.PageSize);
 

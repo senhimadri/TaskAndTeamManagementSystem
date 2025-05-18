@@ -5,6 +5,8 @@ namespace TaskAndTeamManagementSystem.Application.Contracts.Persistences.IReposi
 
 public interface ITaskItemRepository : IGenericRepository<TaskItem, long>
 {
-    IQueryable<TaskItem> TaskItemDetails(Expression<Func<TaskItem, bool>> filter);
+    public IQueryable<TaskItem> TaskItemDetails(Expression<Func<TaskItem, bool>> filter,
+                                                Expression<Func<TaskItem, object>>? orderBy = null,
+                                                bool ascending = true);
 }
 

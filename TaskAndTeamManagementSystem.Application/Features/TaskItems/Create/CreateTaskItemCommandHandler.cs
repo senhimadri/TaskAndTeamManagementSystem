@@ -19,7 +19,7 @@ internal class CreateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHa
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();
 
-        var _createdBy = Guid.NewGuid();
+        var _createdBy = new Guid("11111111-1111-1111-1111-111111111111");
 
         var taskItem = request.Payload.ToEntity(_createdBy);
 

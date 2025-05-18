@@ -34,13 +34,14 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
 
     public ITaskItemQueryFilter IncludeDueDate(DateTimeOffset? frondate, DateTimeOffset? todate)
     {
-        filter = filter.And(x => x.DueDate >= frondate && x.DueDate <= todate);
+        filter = filter.And(x => (frondate == null || x.DueDate >= frondate)
+                                && (todate== null || x.DueDate <= todate));
         return this;
     }
 
     public ITaskItemQueryFilter IncludeStatus(TaskStatus? Id)
     {
-        filter = filter.And(x =>Id == null || x.Status == Id);
+        filter = filter.And(x =>Id == 0 || x.Status == Id);
         return this;
     }
 

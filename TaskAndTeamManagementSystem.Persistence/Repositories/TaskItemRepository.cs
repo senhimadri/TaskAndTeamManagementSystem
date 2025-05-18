@@ -9,15 +9,21 @@ internal class TaskItemRepository(AppDbContext context) : GenericRepository<Task
 {
     private readonly AppDbContext _context = context;
 
-    public IQueryable<TaskItem> TaskItemDetails(Expression<Func<TaskItem, bool>> filter)
+    public IQueryable<TaskItem> TaskItemDetails(Expression<Func<TaskItem, bool>> filter,
+                                                Expression<Func<TaskItem, object>>? orderBy = null,
+                                                bool ascending = true)
     {
         var query = _context.TaskItems
-                .Include(t => t.AssignedUser)
-                .Include(t => t.CreatedByUser)
-                .Include(t => t.Team)
-                .Include(t => t.Status)
-                .AsQueryable();
+            .Include(t => t.AssignedUser)
+            .Include(t => t.CreatedByUser)
+            .Include(t => t.Team)
+            .Where(filter);
 
-        return query;
+        if (orderBy != null)
+        {
+            query = ascending ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
+        }
+
+        return query.AsQueryable();
     }
 }

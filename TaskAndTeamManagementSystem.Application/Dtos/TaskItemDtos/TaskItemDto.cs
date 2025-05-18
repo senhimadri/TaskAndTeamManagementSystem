@@ -36,7 +36,8 @@ public record GetTaskItemsListResponse( long Id,
                                         string CreatedByName,
                                         string TeamName);
 
-public record TaskItemPaginationQuery(string? SearchText,TaskStatus StatusId,
+public record TaskItemPaginationQuery(string? SearchText,
+                                      TaskStatus StatusId,
                                       Guid? AssignedUserId,
                                       Guid? CreatedById,
                                       int TeamId,

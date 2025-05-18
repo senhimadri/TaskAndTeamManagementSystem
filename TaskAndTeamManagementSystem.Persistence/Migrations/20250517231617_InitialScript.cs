@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TaskAndTeamManagementSystem.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -53,7 +55,7 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    DueDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    DueDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     AssignedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: false),
@@ -82,6 +84,21 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Teams",
+                columns: new[] { "Id", "CreateAt", "Description", "IsDelete", "Name", "UpdateAt" },
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "This is a test team.", false, "Test Team", null });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CreateAt", "Email", "IsDelete", "Name", "UpdateAt" },
+                values: new object[,]
+                {
+                    { new Guid("11111111-1111-1111-1111-111111111111"), new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "test.admin@tms.com", false, "Test Admin", null },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "test.manager@tms.com", false, "Test Manager", null },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "test.employee@tms.com", false, "Test Employee", null }
                 });
 
             migrationBuilder.CreateIndex(
