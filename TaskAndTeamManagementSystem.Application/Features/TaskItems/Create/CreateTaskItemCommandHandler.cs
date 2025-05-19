@@ -16,6 +16,8 @@ internal class CreateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHa
         var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
                              .ValidateAsync(request.Payload);
 
+        throw new UnauthorizedAccessException("Test Exceptions");
+
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();
 

@@ -12,6 +12,7 @@ namespace TaskAndTeamManagementSystem.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[ProducesResponseType(500)]
 public class TaskItemController(IMediator _mediator) : ControllerBase
 {
     [HttpPost]
@@ -23,7 +24,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
             onSuccess: () => Created(),
             onValidationFailure: validationErrors => ValidationProblem(validationErrors),
             onFailure: error => BadRequest(error)
-);
+        );
     }
 
     [HttpPut("{id}")]

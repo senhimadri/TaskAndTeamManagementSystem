@@ -11,39 +11,47 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next)
     private readonly RequestDelegate _next = next;
     public async Task Invoke(HttpContext context)
     {
-        var stopwatch = Stopwatch.StartNew();
-
-        var requestBody = await ReadRequestBody(context.Request);
-        var requestLog = new
+        try
         {
-            Method = context.Request.Method,
-            Url = context.Request.Path,
-            Headers = context.Request.Headers,
-            Body = requestBody
-        };
+            var stopwatch = Stopwatch.StartNew();
 
-        Log.Information("➡️ Request: {Request}", requestLog);
+            var requestBody = await ReadRequestBody(context.Request);
+            var requestLog = new
+            {
+                Method = context.Request.Method,
+                Url = context.Request.Path,
+                Headers = context.Request.Headers,
+                Body = requestBody
+            };
 
-        var originalBodyStream = context.Response.Body;
-        using var responseBody = new MemoryStream();
-        context.Response.Body = responseBody;
+            Log.Information("➡️ Request: {Request}", requestLog);
 
-        await _next(context);
+            var originalBodyStream = context.Response.Body;
+            using var responseBody = new MemoryStream();
+            context.Response.Body = responseBody;
 
-        stopwatch.Stop();
+            await _next(context);
 
-        var responseBodyContent = await ReadResponseBody(context.Response);
-        var responseLog = new
+            stopwatch.Stop();
+
+            var responseBodyContent = await ReadResponseBody(context.Response);
+            var responseLog = new
+            {
+                StatusCode = context.Response.StatusCode,
+                ElapsedTimeMs = stopwatch.ElapsedMilliseconds,
+                Body = responseBodyContent ?? string.Empty
+            };
+
+            Log.Information("⬅️ Response: {Response}", responseLog);
+
+            responseBody.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originalBodyStream);
+        }
+        catch (Exception ex)
         {
-            StatusCode = context.Response.StatusCode,
-            ElapsedTimeMs = stopwatch.ElapsedMilliseconds,
-            Body = responseBodyContent ?? string.Empty
-        };
-
-        Log.Information("⬅️ Response: {Response}", responseLog);
-
-        responseBody.Seek(0, SeekOrigin.Begin);
-        await responseBody.CopyToAsync(originalBodyStream);
+            throw;
+        }
+        
 
 
     }

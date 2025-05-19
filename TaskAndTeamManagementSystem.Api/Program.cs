@@ -1,11 +1,10 @@
-using TaskAndTeamManagementSystem.Application;
-using TaskAndTeamManagementSystem.Persistence;
-using TaskAndTeamManagementSystem.Infrastructure;
 using System.Threading.RateLimiting;
 using TaskAndTeamManagementSystem.Api.Middlewares;
+using TaskAndTeamManagementSystem.Application;
+using TaskAndTeamManagementSystem.Infrastructure;
+using TaskAndTeamManagementSystem.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
@@ -37,22 +36,17 @@ builder.Services.AddRateLimiter(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseGlobalExceptionMiddleware();
+app.UseRouting();
 app.UseRateLimiter();
-
 app.UseRequestResponseLogging();
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseHttpsRedirection();
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
