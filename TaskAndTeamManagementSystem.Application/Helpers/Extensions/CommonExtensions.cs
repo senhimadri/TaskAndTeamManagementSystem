@@ -1,4 +1,6 @@
-﻿namespace TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+﻿using System.Text.Json;
+
+namespace TaskAndTeamManagementSystem.Application.Helpers.Extensions;
 
 public static class CommonExtensions
 {
@@ -23,5 +25,19 @@ public static class CommonExtensions
         if (values == null || values.Count == 0)
             return string.Empty;
         return string.Join(",", values);
+    }
+
+    public static string SerializeToJson<T>(this T? data)
+    {
+        if (data is not null)
+        {
+            return JsonSerializer.Serialize(data, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+        }
+
+        return string.Empty;
     }
 }
