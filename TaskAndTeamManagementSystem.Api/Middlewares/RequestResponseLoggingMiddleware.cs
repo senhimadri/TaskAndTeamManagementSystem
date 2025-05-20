@@ -20,13 +20,13 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
         
         using var responseBody = new MemoryStream();
         context.Response.Body = responseBody;
+        var requestLog = await CaptureRequestDetails(context.Request);
 
         try
         {
+
             await _next(context);
             stopwatch.Stop();
-
-            var requestLog = await CaptureRequestDetails(context.Request);
 
             if (!context.Response.HasStarted)
             {
@@ -45,9 +45,20 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
                 Log.Information("➡️ Request (response skipped): {Request}", requestLog);
             }
         }
+        catch (Exception ex)
+        {
+            var combinedLog = new
+            {
+                Request = requestLog,
+                Response = ex.Message
+            };
+            Log.Information("🔄 Request-Response: {CombinedLog}", combinedLog);
+
+            throw;
+        }
         finally
         {
-            stopwatch.Stop();
+         
 
             if (responseBody.Length > 0)
             {
