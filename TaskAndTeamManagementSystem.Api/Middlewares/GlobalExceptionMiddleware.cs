@@ -1,11 +1,9 @@
 ﻿using Serilog;
 using System.Text.Json;
-using TaskAndTeamManagementSystem.Api.Helpers;
-using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
 
 namespace TaskAndTeamManagementSystem.Api.Middlewares;
 
-public class GlobalExceptionMiddleware(RequestDelegate _next, IWebHostEnvironment _environment)
+public class GlobalExceptionMiddleware(RequestDelegate _next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -15,10 +13,7 @@ public class GlobalExceptionMiddleware(RequestDelegate _next, IWebHostEnvironmen
         }
         catch (Exception ex)
         {
-
-            var requestDetails =(await  context.Request.CaptureRequestDetails()).SerializeToJson();
-
-            Log.Error(ex, "❌ Unhandled exception at {Path}. Request Details {RequestDetails}", context.Request.Path, requestDetails);
+            Log.Error(ex, "❌ Unhandled exception at {Path}.", context.Request.Path);
 
             if (context.Response.HasStarted)
             {

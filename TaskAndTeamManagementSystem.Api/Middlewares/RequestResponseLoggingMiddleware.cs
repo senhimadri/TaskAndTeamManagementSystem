@@ -1,12 +1,11 @@
 ﻿using Serilog;
 using System.Diagnostics;
-using TaskAndTeamManagementSystem.Api.Helpers;
+using System.Text;
 
 namespace TaskAndTeamManagementSystem.Api.Middlewares;
 
-public class RequestResponseLoggingMiddleware(RequestDelegate next)
+public class RequestResponseLoggingMiddleware(RequestDelegate _next)
 {
-    private readonly RequestDelegate _next = next;
     public async Task InvokeAsync(HttpContext context)
     {
         if (context.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
@@ -27,11 +26,11 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next)
             await _next(context);
             stopwatch.Stop();
 
-            var requestLog = await context.Request.CaptureRequestDetails();
+            var requestLog = await CaptureRequestDetails(context.Request);
 
             if (!context.Response.HasStarted)
             {
-                var responseLog = await context.Response.CaptureResponseDetails(stopwatch.ElapsedMilliseconds);
+                var responseLog = await CaptureResponseDetails(context.Response,stopwatch.ElapsedMilliseconds);
 
                 var combinedLog = new
                 {
@@ -56,6 +55,71 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next)
                 await responseBody.CopyToAsync(originalBodyStream);
             }
             context.Response.Body = originalBodyStream;
+        }
+    }
+
+    private async Task<object?> CaptureRequestDetails(HttpRequest request)
+    {
+        try
+        {
+            var body = await ReadRequestBody(request);
+            return new
+            {
+                Method = request.Method,
+                Url = request.Path.ToString(),
+                Body = body
+            };
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error in RequestResponseLoggingMiddleware");
+            return null;
+        }
+
+    }
+    private async Task<object> CaptureResponseDetails(HttpResponse response, long elapsedTimeMs)
+    {
+        if (response.Body.CanSeek)
+        {
+            response.Body.Seek(0, SeekOrigin.Begin);
+
+            using var reader = new StreamReader(stream: response.Body, encoding: Encoding.UTF8,
+                                                detectEncodingFromByteOrderMarks: false,
+                                                bufferSize: 1024, leaveOpen: true);
+
+            var body = await reader.ReadToEndAsync();
+
+            response.Body.Seek(0, SeekOrigin.Begin);
+
+            return new
+            {
+                StatusCode = response.StatusCode,
+                ElapsedTimeMs = elapsedTimeMs,
+                Body = body
+            };
+        }
+        Log.Warning("Response body stream is not seekable, skipping response body logging.");
+        return new
+        {
+            StatusCode = response.StatusCode,
+            ElapsedTimeMs = elapsedTimeMs,
+            Body = string.Empty
+        };
+    }
+
+    private static async Task<string> ReadRequestBody(HttpRequest request)
+    {
+        request.EnableBuffering();
+        try
+        {
+            using var reader = new StreamReader(stream: request.Body, encoding: Encoding.UTF8,
+                                    detectEncodingFromByteOrderMarks: false, bufferSize: 1024, leaveOpen: true);
+            var body = await reader.ReadToEndAsync();
+            return string.IsNullOrEmpty(body) ? string.Empty : body;
+        }
+        finally
+        {
+            request.Body.Position = 0;
         }
     }
 }
