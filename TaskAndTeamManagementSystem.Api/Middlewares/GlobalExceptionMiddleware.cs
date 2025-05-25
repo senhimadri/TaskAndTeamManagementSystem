@@ -5,7 +5,6 @@ namespace TaskAndTeamManagementSystem.Api.Middlewares;
 
 public class GlobalExceptionMiddleware(RequestDelegate _next)
 {
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
