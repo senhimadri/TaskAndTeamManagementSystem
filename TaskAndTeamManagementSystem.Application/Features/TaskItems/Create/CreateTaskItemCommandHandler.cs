@@ -1,9 +1,9 @@
 ﻿using MediatR;
+using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
 using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
 using TaskAndTeamManagementSystem.Application.Helpers.Results;
-using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
@@ -15,8 +15,6 @@ internal class CreateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHa
     {
         var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
                              .ValidateAsync(request.Payload);
-
-        throw new KeyNotFoundException("1111111111-111111111111-Exception");
 
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();

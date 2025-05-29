@@ -2,6 +2,6 @@
 
 namespace TaskAndTeamManagementSystem.Application.Contracts.Persistences.IRepositories;
 
-public interface IUserRepository : IGenericRepository<User, Guid>;
+public interface IUserRepository : IGenericRepository<ApplicationUser, Guid>;
 
 

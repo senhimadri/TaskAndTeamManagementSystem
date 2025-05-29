@@ -3,7 +3,4 @@ using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Persistence.Repositories;
 
-internal class TeamRepository(AppDbContext context) : GenericRepository<Team, int>(context), ITeamRepository
-{
-
-}
+internal class TeamRepository(AppDbContext context) : GenericRepository<Team, int>(context), ITeamRepository;

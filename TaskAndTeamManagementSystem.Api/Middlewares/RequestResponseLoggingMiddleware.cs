@@ -52,7 +52,7 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
                 Request = requestLog,
                 Response = ex.Message
             };
-            Log.Information("🔄 Request-Response: {CombinedLog}", combinedLog);
+            Log.Error(ex, "🔄 Request-Response: {CombinedLog}", combinedLog);
 
             throw;
         }

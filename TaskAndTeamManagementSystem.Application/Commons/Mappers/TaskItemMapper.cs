@@ -66,14 +66,16 @@ public static class TaskItemMapper
              entity.Title,
              entity.Description,
              (int)entity.Status,
-             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : entity.Status == Domain.TaskStatus.InProgress ? "In Progress" : "Done",
+             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : 
+                entity.Status == Domain.TaskStatus.InProgress ? "In Progress" 
+                : "Done",
              entity.DueDate,
              entity.AssignedUserId,
              entity.AssignedUser.Name ?? "Unknown",
              entity.CreatedByUserId,
-             entity.CreatedByUser.Name ?? "Unknown",
+             entity.CreatedByUser.Name,
              entity.TeamId,
-             entity.Team.Name ?? "Unknown"
+             entity.Team != null ? entity.Team.Name : null
         ));
     }
 
@@ -85,7 +87,7 @@ public static class TaskItemMapper
              entity.Status == Domain.TaskStatus.ToDo ? "To Do" : entity.Status == Domain.TaskStatus.InProgress ? "In Progress" : "Done",
              entity.AssignedUser.Name,
              entity.CreatedByUser.Name,
-             entity.Team.Name
+             entity.Team != null ? entity.Team.Name : "Unknown"
         ));
     }
 }

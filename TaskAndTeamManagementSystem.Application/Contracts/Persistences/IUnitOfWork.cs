@@ -4,7 +4,7 @@ namespace TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    IUserRepository UserRepository { get; }
+    //IUserRepository UserRepository { get; }
     ITaskItemRepository TaskItemRepository { get; }
     ITeamRepository TeamRepository { get; }
 

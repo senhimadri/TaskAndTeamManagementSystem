@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Identity\TaskAndTeamManagementSystem.Identity.csproj" />
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Infrastructure\TaskAndTeamManagementSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj" />
   </ItemGroup>
