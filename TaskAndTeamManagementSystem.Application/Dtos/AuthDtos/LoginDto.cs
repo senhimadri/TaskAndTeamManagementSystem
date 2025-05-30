@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskAndTeamManagementSystem.Application.Dtos.LoginDtos;
+namespace TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
 
 public record LoginPayload([Required]string UserName, [Required][DataType(DataType.Password)] string Password);
 

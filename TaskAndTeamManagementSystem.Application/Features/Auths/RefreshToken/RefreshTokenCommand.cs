@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
-using TaskAndTeamManagementSystem.Application.Dtos.LoginDtos;
+using TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
 
 namespace TaskAndTeamManagementSystem.Application.Features.Auths.RefreshToken;
 
