@@ -58,8 +58,6 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
         }
         finally
         {
-         
-
             if (responseBody.Length > 0)
             {
                 responseBody.Seek(0, SeekOrigin.Begin);

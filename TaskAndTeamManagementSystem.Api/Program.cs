@@ -4,6 +4,7 @@ using TaskAndTeamManagementSystem.Api.Middlewares;
 using TaskAndTeamManagementSystem.Application;
 using TaskAndTeamManagementSystem.Identity;
 using TaskAndTeamManagementSystem.Infrastructure;
+using TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
 using TaskAndTeamManagementSystem.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,7 @@ builder.Services.AddIdentityServices(builder.Configuration);
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task And Team Management System", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -67,20 +68,23 @@ builder.Services.AddRateLimiter(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseGlobalExceptionMiddleware();
+app.UseGlobalExceptionMiddleware(); 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRateLimiter();
 app.UseRequestResponseLogging();
 app.MapControllers();
+app.MapHub<NotificationHub>("/hub/notifications");
 
 if (app.Environment.IsDevelopment())
 {

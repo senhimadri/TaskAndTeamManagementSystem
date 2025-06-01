@@ -11,7 +11,7 @@ internal class LoginCommandHandler(IIdentityUnitOfWork unitOfWork, ITokenUtils t
     {
         var user = await unitOfWork.UserManager.FindByNameAsync(request.Payload.UserName);
 
-        if (user == null)
+        if (user is null)
             throw new UnauthorizedAccessException("Invalid credentials");
 
         var result = await unitOfWork.SignInManager.CheckPasswordSignInAsync(user, request.Payload.Password, false);

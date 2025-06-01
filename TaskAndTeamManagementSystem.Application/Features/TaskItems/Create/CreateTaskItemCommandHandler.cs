@@ -19,9 +19,9 @@ internal class CreateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHa
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();
 
-        var _createdBy = new Guid("11111111-1111-1111-1111-111111111111");
+        var createdBy = Guid.Parse("FA0F1035-19F7-49F6-8AD9-08DD9FFF3137");
 
-        var taskItem = request.Payload.ToEntity(_createdBy);
+        var taskItem = request.Payload.ToEntity(createdBy);
 
         await _unitofWork.TaskItemRepository.AddAsync(taskItem);
 

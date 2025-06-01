@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
-using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 using TaskAndTeamManagementSystem.Domain;
 using TaskAndTeamManagementSystem.Persistence;
 

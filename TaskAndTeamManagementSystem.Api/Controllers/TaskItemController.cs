@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskAndTeamManagementSystem.Api.Helpers;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
@@ -10,6 +11,7 @@ using TaskAndTeamManagementSystem.Application.Features.TaskItems.Update;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 [ProducesResponseType(500)]
