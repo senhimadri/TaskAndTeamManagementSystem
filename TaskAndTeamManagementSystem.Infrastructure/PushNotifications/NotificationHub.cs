@@ -8,8 +8,9 @@ public class NotificationHub : Hub
 {
     public override async Task OnConnectedAsync()
     {
-        var userId = Context.UserIdentifier;
-        Console.WriteLine($"User connected: {userId} ({Context.ConnectionId})");
+
+        Console.WriteLine($"✅ SignalR Connected: {Context.UserIdentifier} - {Context.ConnectionId}");
+
         await base.OnConnectedAsync();
     }
 }

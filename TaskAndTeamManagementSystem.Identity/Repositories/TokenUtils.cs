@@ -20,7 +20,8 @@ internal class TokenUtils(IOptions<JwtSettings> options) : ITokenUtils
            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
            new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
            new(ClaimTypes.Name, user.UserName ?? string.Empty),
-       };
+           new(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
 
         if (roles != null)
         {

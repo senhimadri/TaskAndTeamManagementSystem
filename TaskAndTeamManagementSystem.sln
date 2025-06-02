@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B87B4257-11E9-4689-8FF9-D0DC58ACABE5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B87B4257-11E9-4689-8FF9-D0DC58ACABE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{AE4009CC-6D5E-40A6-BACD-B95533BEB38A}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskAndTeamManagementSystem.Persistence", "TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj", "{0ABBE2F5-5FD1-64D0-C32D-C3DEE28273B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskAndTeamManagementSystem.Shared", "TaskAndTeamManagementSystem.Shared\TaskAndTeamManagementSystem.Shared.csproj", "{377E95B3-BBB0-4C34-A0E1-5BF51AEF9520}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{23AD0569-0695-4EA9-859A-34688C40BA8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskAndTeamManagementSystem.SignalRClient", "TaskAndTeamManagementSystem.SignalRClient\TaskAndTeamManagementSystem.SignalRClient.csproj", "{456F1F84-5113-4026-AEA2-2B7F1DEAC14C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,10 @@ Global
 		{377E95B3-BBB0-4C34-A0E1-5BF51AEF9520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{377E95B3-BBB0-4C34-A0E1-5BF51AEF9520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{377E95B3-BBB0-4C34-A0E1-5BF51AEF9520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{456F1F84-5113-4026-AEA2-2B7F1DEAC14C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{456F1F84-5113-4026-AEA2-2B7F1DEAC14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{456F1F84-5113-4026-AEA2-2B7F1DEAC14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{456F1F84-5113-4026-AEA2-2B7F1DEAC14C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +84,7 @@ Global
 		{87FD956B-BA8C-C24D-2777-7FB54B4AD610} = {082B01F4-FDFF-45BA-97A0-B1C516D92A64}
 		{0ABBE2F5-5FD1-64D0-C32D-C3DEE28273B2} = {082B01F4-FDFF-45BA-97A0-B1C516D92A64}
 		{377E95B3-BBB0-4C34-A0E1-5BF51AEF9520} = {413CB630-D3D4-4D80-8A61-1820B7F891C8}
+		{456F1F84-5113-4026-AEA2-2B7F1DEAC14C} = {23AD0569-0695-4EA9-859A-34688C40BA8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1071D289-65C3-4F55-9DE8-2C58F17DDF2F}
