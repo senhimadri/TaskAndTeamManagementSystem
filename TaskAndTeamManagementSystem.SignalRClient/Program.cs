@@ -12,7 +12,7 @@ var connection = new HubConnectionBuilder()
     .WithAutomaticReconnect()
     .Build();
 
-connection.On<string>("ReceiveMessage", message =>
+connection.On<string>("ReceiveNotification", message =>
 {
     Console.WriteLine($"Received message: {message}");
 });
@@ -25,7 +25,6 @@ try
 catch (Exception ex)
 {
     Console.WriteLine($"❌ Connection failed: {ex.Message}");
-    return;
 }
 
 Console.WriteLine("Listening for messages. Press any key to exit.");
