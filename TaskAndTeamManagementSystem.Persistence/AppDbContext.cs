@@ -7,12 +7,12 @@ namespace TaskAndTeamManagementSystem.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>(options)
 {
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
 
-        var entityTypes = modelBuilder.Model.GetEntityTypes()
-            .Where(entityType => typeof(IBaseDomain).IsAssignableFrom(entityType.ClrType))
-            .Select(entityType => entityType.ClrType);
+        var entityTypes = builder.Model.GetEntityTypes()
+                            .Where(entityType => typeof(IBaseDomain).IsAssignableFrom(entityType.ClrType))
+                            .Select(entityType => entityType.ClrType);
 
         foreach (var clrType in entityTypes)
         {
@@ -22,12 +22,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
             var lambda = Expression.Lambda(notDeleted, parameter);
 
-            modelBuilder.Entity(clrType).HasQueryFilter(lambda);
+            builder.Entity(clrType).HasQueryFilter(lambda);
         }
 
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

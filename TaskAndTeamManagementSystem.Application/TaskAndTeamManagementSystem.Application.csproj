@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Contracts\TaskAndTeamManagementSystem.Contracts.csproj" />
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Domain\TaskAndTeamManagementSystem.Domain.csproj" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@ public class RefreshTokenCommand : IRequest<LoginResponse>
     public string RefreshToken { get; set; } = string.Empty;
 }
 
-public class RefreshTokenCommandHandler(IIdentityUnitOfWork unitOfWork, ITokenUtils tokenUtils) : IRequestHandler<RefreshTokenCommand, LoginResponse>
+public class RefreshTokenCommandHandler(IIdentityUnitOfWork _unitOfWork, ITokenUtils _tokenUtils) : IRequestHandler<RefreshTokenCommand, LoginResponse>
 {
     public Task<LoginResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {

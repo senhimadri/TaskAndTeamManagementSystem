@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.4.1" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.4.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.5" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
@@ -22,6 +26,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Application\TaskAndTeamManagementSystem.Application.csproj" />
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MessageBrokers\Consumers\" />
   </ItemGroup>
 
 </Project>
