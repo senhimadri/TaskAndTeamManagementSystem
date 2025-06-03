@@ -44,8 +44,11 @@ public static class IdentitySeedData
         {
                 new { Email = "admin@demo.com", Password = "Admin123!", FullName = "Admin User", Role = "Admin" },
                 new { Email = "manager@demo.com", Password = "Manager123!", FullName = "Manager User", Role = "Manager" },
-                new { Email = "employee@demo.com", Password = "Employee123!", FullName = "Employee User", Role = "Employee" }
-            };
+                new { Email = "employee@demo.com", Password = "Employee123!", FullName = "Employee User", Role = "Employee" },
+                new { Email = "employee-01@demo.com", Password = "Employee123!", FullName = "Employee 01 User", Role = "Employee" },
+                new { Email = "employee-02@demo.com", Password = "Employee123!", FullName = "Employee 02 User", Role = "Employee" },
+                new { Email = "employee-03@demo.com", Password = "Employee123!", FullName = "Employee 03 User", Role = "Employee" },
+        };
 
         // Seed users
         foreach (var userData in users)
