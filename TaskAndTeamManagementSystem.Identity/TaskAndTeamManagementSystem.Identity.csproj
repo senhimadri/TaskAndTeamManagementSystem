@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.16" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Application\TaskAndTeamManagementSystem.Application.csproj" />
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Domain\TaskAndTeamManagementSystem.Domain.csproj" />
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Persistence\TaskAndTeamManagementSystem.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

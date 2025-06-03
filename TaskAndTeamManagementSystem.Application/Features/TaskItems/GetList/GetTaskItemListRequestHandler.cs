@@ -1,12 +1,10 @@
 ﻿using MediatR;
-using System.Linq.Expressions;
 using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 using TaskAndTeamManagementSystem.Application.Commons.QueryFilter;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.CommonDtos;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
-using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.GetList;
 

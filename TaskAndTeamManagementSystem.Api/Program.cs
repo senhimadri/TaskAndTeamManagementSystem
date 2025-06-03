@@ -1,15 +1,46 @@
-using TaskAndTeamManagementSystem.Application;
-using TaskAndTeamManagementSystem.Persistence;
-using TaskAndTeamManagementSystem.Infrastructure;
+using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
 using TaskAndTeamManagementSystem.Api.Middlewares;
+using TaskAndTeamManagementSystem.Application;
+using TaskAndTeamManagementSystem.Identity;
+using TaskAndTeamManagementSystem.Infrastructure;
+using TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
+using TaskAndTeamManagementSystem.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task And Team Management System", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter JWT with Bearer into field (e.g., Bearer {token})",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -37,23 +68,28 @@ builder.Services.AddRateLimiter(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
-app.UseGlobalExceptionMiddleware();
-app.UseRateLimiter();
-
-app.UseRequestResponseLogging();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpsRedirection();
-app.UseAuthorization();
 
+app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+app.UseGlobalExceptionMiddleware(); 
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseRateLimiter();
+app.UseRequestResponseLogging();
 app.MapControllers();
+app.MapHub<NotificationHub>("/hub/notifications");
+
+if (app.Environment.IsDevelopment())
+{
+    await app.AddIdentitySeedData();
+}
 
 app.Run();
 

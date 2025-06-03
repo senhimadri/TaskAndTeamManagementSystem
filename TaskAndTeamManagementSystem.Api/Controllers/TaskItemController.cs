@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskAndTeamManagementSystem.Api.Helpers;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
@@ -10,8 +11,10 @@ using TaskAndTeamManagementSystem.Application.Features.TaskItems.Update;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
+[ProducesResponseType(500)]
 public class TaskItemController(IMediator _mediator) : ControllerBase
 {
     [HttpPost]
@@ -23,7 +26,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
             onSuccess: () => Created(),
             onValidationFailure: validationErrors => ValidationProblem(validationErrors),
             onFailure: error => BadRequest(error)
-);
+        );
     }
 
     [HttpPut("{id}")]

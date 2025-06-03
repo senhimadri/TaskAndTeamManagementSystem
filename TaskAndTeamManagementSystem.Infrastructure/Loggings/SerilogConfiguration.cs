@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace TaskAndTeamManagementSystem.Infrastructure;
+namespace TaskAndTeamManagementSystem.Infrastructure.Logging;
 
 public static class SerilogConfiguration
 {

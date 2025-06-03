@@ -4,6 +4,8 @@ public static class Errors
 {
     public static readonly Error TaskNotFound = new Error(404, "Task not found");
 
+    public static readonly Error UserNotAuthenticated = new Error(401, "User is not authenticated.");
+
     public static readonly Error BadRequest = new Error(400, "Bad request.");
     public static readonly Error UnauthorizedAccess = new Error(401, "Unauthorized access.");
     public static readonly Error Forbidden = new Error(403, "Forbidden access.");

@@ -26,11 +26,11 @@ public class TaskItemDtoValidator: AbstractValidator<ITaskItemDto>
             .Must(d => d == null || d > DateTimeOffset.UtcNow)
             .WithMessage("Due date must be in the future.");
 
-        RuleFor(x => x.AssignedUserId)
-            .NotEmpty().WithMessage("Assigned user is required.")
-            .MustAsync(async (assignedUserId, cancellationToken) =>
-                await _unitOfWork.UserRepository.IsAnyAsync(u => u.Id == assignedUserId))
-            .WithMessage("Assigned user does not exist.");
+        //RuleFor(x => x.AssignedUserId)
+        //    .NotEmpty().WithMessage("Assigned user is required.")
+        //    .MustAsync(async (assignedUserId, cancellationToken) =>
+        //        await _unitOfWork.UserRepository.IsAnyAsync(u => u.Id == assignedUserId))
+        //    .WithMessage("Assigned user does not exist.");
 
         RuleFor(x => x.TeamId)
             .NotEqual(0).WithMessage("Team ID must be a non-zero value.")

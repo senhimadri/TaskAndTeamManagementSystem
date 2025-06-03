@@ -1,32 +1,33 @@
-﻿using TaskAndTeamManagementSystem.Domain;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using System.Linq.Expressions;
+using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        var entityTypes = modelBuilder.Model.GetEntityTypes()
+            .Where(entityType => typeof(IBaseDomain).IsAssignableFrom(entityType.ClrType))
+            .Select(entityType => entityType.ClrType);
+
+        foreach (var clrType in entityTypes)
         {
-            if (typeof(IBaseDomain).IsAssignableFrom(entityType.ClrType))
-            {
-                var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(IBaseDomain.IsDelete));
-                var notDeleted = Expression.Equal(property, Expression.Constant(false));
+            var parameter = Expression.Parameter(clrType, "e");
+            var property = Expression.Property(parameter, nameof(IBaseDomain.IsDelete));
+            var notDeleted = Expression.Equal(property, Expression.Constant(false));
 
-                var lambda = Expression.Lambda(notDeleted, parameter);
+            var lambda = Expression.Lambda(notDeleted, parameter);
 
-                modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
-            }
+            modelBuilder.Entity(clrType).HasQueryFilter(lambda);
         }
 
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -38,7 +39,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         foreach (var entry in entries)
         {
             var entity = (IBaseDomain)entry.Entity;
-
 
             if (entry.State == EntityState.Added)
             {
@@ -52,8 +52,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         }
         return base.SaveChangesAsync(cancellationToken);
     }
-
-    public DbSet<User> Users { get; set; } = default!;
     public DbSet<TaskItem> TaskItems { get; set; } = default!;
     public DbSet<Team> Teams { get; set; } = default!;
 }

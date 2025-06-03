@@ -26,8 +26,8 @@ public record GetTaskItemByIdResponse(string Title,
                                     string AssignedUserName,
                                     Guid CreatedById,
                                     string CreatedByName,   
-                                    int TeamId,
-                                    string TeamName);
+                                    int? TeamId,
+                                    string? TeamName);
 
 public record GetTaskItemsListResponse( long Id,
                                         string Title,

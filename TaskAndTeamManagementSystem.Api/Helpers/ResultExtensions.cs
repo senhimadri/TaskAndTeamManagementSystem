@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskAndTeamManagementSystem.Application.Helpers.Results;
-using TaskAndTeamManagementSystem.Application.Helpers.Results;
 
 namespace TaskAndTeamManagementSystem.Api.Helpers;
 
@@ -11,9 +10,17 @@ public static class ResultExtensions
         Func<ValidationProblemDetails, IActionResult> onValidationFailure,
         Func<Error, IActionResult> onFailure)
     {
-        return result.IsSuccess ? onSuccess()
-            : (result.IsValidationFailure && result.ValidationErrors is not null) ? onValidationFailure(result.ValidationErrors.ToValidationDetails())
-            : onFailure(result.Error);
+        if (result.IsSuccess)
+        {
+            return onSuccess();
+        }
+
+        if (result.IsValidationFailure && result.ValidationErrors is not null)
+        {
+            return onValidationFailure(result.ValidationErrors.ToValidationDetails());
+        }
+
+        return onFailure(result.Error);
     }
 
     public static ValidationProblemDetails ToValidationDetails(this Dictionary<string, string[]> ValidationErrors)

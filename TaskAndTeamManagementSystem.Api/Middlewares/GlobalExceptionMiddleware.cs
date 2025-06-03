@@ -1,60 +1,59 @@
 ﻿using Serilog;
+using System.Text.Json;
 
-namespace TaskAndTeamManagementSystem.Api.Middlewares
+namespace TaskAndTeamManagementSystem.Api.Middlewares;
+
+public class GlobalExceptionMiddleware(RequestDelegate _next)
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
-    public class GlobalExceptionMiddleware
+    public async Task InvokeAsync(HttpContext context)
     {
-        private readonly RequestDelegate _next;
-        private readonly IWebHostEnvironment _env;
-
-        public GlobalExceptionMiddleware(RequestDelegate next, IWebHostEnvironment env)
+        try
         {
-            _next = next;
-            _env = env;
+            await _next(context);
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        catch (Exception ex)
         {
-            try
+            Log.Error(ex, "❌ Unhandled exception at {Path}.", context.Request.Path);
+
+            if (context.Response.HasStarted)
             {
-                await _next(context);
+                Log.Warning("❗ Response has already started, skipping error handling.");
+                return;
             }
-            catch (Exception ex)
-            {
 
-                var statusCode = StatusCodes.Status500InternalServerError;
-                context.Response.StatusCode = statusCode;
-                context.Response.ContentType = "application/json";
+            context.Response.Clear();
+            context.Response.ContentType = "application/json";
 
-                Log.Error(ex, "❌ Exception at {Path}", context.Request.Path);
-
-                if (_env.IsDevelopment())
-                {
-                    var devResponse = new
-                    {
-                        StatusCode = statusCode,
-                        Message = ex.Message,
-                        StackTrace = ex.StackTrace,
-                        Source = ex.Source,
-                        ExceptionType = ex.GetType().Name
-                    };
-
-                    Log.Information("⬅️ Response: {@Response}", devResponse);
-                    await context.Response.WriteAsJsonAsync(devResponse);
-                }
-                else
-                {
-                    var prodResponse = new
-                    {
-                        StatusCode = statusCode,
-                        Message = "An unexpected error occurred. Please try again later."
-                    };
-
-                    Log.Information("⬅️ Response: {@Response}", prodResponse);
-                    await context.Response.WriteAsJsonAsync(prodResponse);
-                }
-            }
+            await HandleExceptionAsync(context, ex);
         }
+    }
+
+
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+
+        var (statusCode, message) = exception switch
+        {
+            ArgumentNullException => (StatusCodes.Status400BadRequest, "A required parameter was null."),
+            ArgumentException => (StatusCodes.Status400BadRequest, exception.Message),
+            KeyNotFoundException => (StatusCodes.Status404NotFound, "The requested resource was not found."),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized access."),
+            NotImplementedException => (StatusCodes.Status501NotImplemented, "Not implemented."),
+            OperationCanceledException => (StatusCodes.Status408RequestTimeout, "Request timed out."),
+            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")
+        };
+
+        context.Response.StatusCode = statusCode;
+
+        var response = new
+        {
+            StatusCode = statusCode,
+            Error = message
+        };
+
+        var json = JsonSerializer.Serialize(response);
+
+        return context.Response.WriteAsync(json);
     }
 }
