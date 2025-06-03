@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.Notifications;
-using TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
 
-namespace TaskAndTeamManagementSystem.Infrastructure;
+namespace TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
 
 public class SignalRNotifier(IHubContext<NotificationHub> _hubContext) : IRealTimeNotificationService
 {

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
@@ -23,6 +21,8 @@ public static class IdentityServiceRegistration
 
         services.AddScoped<ITokenUtils, TokenUtils>();
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {

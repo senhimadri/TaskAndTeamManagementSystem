@@ -34,8 +34,8 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
 
     public ITaskItemQueryFilter IncludeDueDate(DateTimeOffset? frondate, DateTimeOffset? todate)
     {
-        filter = filter.And(x => (frondate == null || x.DueDate >= frondate)
-                                && (todate== null || x.DueDate <= todate));
+        filter = filter.And(x => (!frondate.HasValue || x.DueDate >= frondate)
+                                && (!todate.HasValue || x.DueDate <= todate));
         return this;
     }
 
