@@ -8,9 +8,12 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
     public AppDbContext CreateDbContext(string[] args)
     {
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
         IConfigurationRoot configuration = new ConfigurationBuilder()
                                                 .SetBasePath(Directory.GetCurrentDirectory())
                                                 .AddJsonFile("appsettings.json")
+                                                .AddJsonFile($"appsettings.{environment}.json", optional: true)
                                                 .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
