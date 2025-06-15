@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
-using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
+using TaskAndTeamManagementSystem.Application.Features.Auths.GoogleLogin;
+using TaskAndTeamManagementSystem.Application.Features.Auths.GoogleResponse;
 using TaskAndTeamManagementSystem.Application.Features.Auths.Login;
-using TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;
 
@@ -11,12 +13,19 @@ namespace TaskAndTeamManagementSystem.Api.Controllers;
 [ApiController]
 public class AuthController(IMediator _mediator) : ControllerBase
 {
-    [HttpPost]
-    [Route("login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginPayload payload)
     {
         var command = new LoginCommand { Payload = payload };
         var response = await _mediator.Send(command);
         return Ok(response);
+    }
+
+    [HttpPost("google-login")]
+    public async Task<IActionResult> GoogleLogin( string token)
+    {
+        var command = new GoogleLoginCommand { Token = token };
+        var loginResponse = await _mediator.Send(command);
+        return Ok(loginResponse);
     }
 }

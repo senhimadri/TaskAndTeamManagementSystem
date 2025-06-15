@@ -7,7 +7,7 @@ using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
 using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
 using TaskAndTeamManagementSystem.Application.Helpers.Results;
-using TaskAndTeamManagementSystem.Contracts.Events.TaskItems;
+using TaskAndTeamManagementSystem.Contracts;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
