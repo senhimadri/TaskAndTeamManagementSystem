@@ -5,34 +5,50 @@ using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.MessageBr
 using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.Notifications;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
-using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
-using TaskAndTeamManagementSystem.Application.Helpers.Results;
+using TaskAndTeamManagementSystem.Shared.Results;
 using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Application.Extensions;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
-internal class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNotificationService _notifyer,
-                            ICurrentUserService _currentUser, IEventPublisher _eventPublisher) : IRequestHandler<CreateTaskItemCommand, Result>
+public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNotificationService _notifyer,
+                            ICurrentUserService _currentUser, IEventPublisher _eventPublisher) 
+                            : IRequestHandler<CreateTaskItemCommand, Result>
 {
     public async Task<Result> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
-                             .ValidateAsync(request.Payload);
+        await _unitofWork.BeginTransactionAsync(cancellationToken);
+        try
+        {
+            var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
+                .ValidateAsync(request.Payload, cancellationToken);
 
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorList();
+            if (!validationResult.IsValid)
+            {
+                return validationResult.ToValidationErrorList();
+            }
 
-        var taskItem = request.Payload.ToEntity(_currentUser.UserId);
+            var taskItem = request.Payload.ToEntity(_currentUser.UserId);
 
-        await _unitofWork.TaskItemRepository.AddAsync(taskItem);
+            await _unitofWork.TaskItemRepository.AddAsync(taskItem);
 
-        await _unitofWork.SaveChangesAsync(cancellationToken);
+            await _eventPublisher.PublishAsync(new CreateTaskItemEvent(
+                taskItem.Id, taskItem.Title, taskItem.Description,
+                taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
-        await _eventPublisher.PublishAsync(new CreateTaskItemEvent(taskItem.Id,taskItem.Title,taskItem.Description,taskItem.Status,taskItem.DueDate,taskItem.AssignedUserId));
 
-        await _notifyer.SendNotificationAsync(request.Payload.AssignedUserId,
-                                    $"You are assigned a task , Task Title {request.Payload.Title}");
+            await _unitofWork.SaveChangesAsync(cancellationToken);
+            await _unitofWork.CommitTransactionAsync(cancellationToken);
 
-        return Result.Success();
+            await _notifyer.SendNotificationAsync(taskItem.AssignedUserId,
+                $"You are assigned a task, Task Title: {taskItem.Title}");
+
+            return Result.Success();
+        }
+        catch (Exception)
+        {
+            await _unitofWork.RollbackTransactionAsync(cancellationToken);
+            throw;
+        }
     }
 }

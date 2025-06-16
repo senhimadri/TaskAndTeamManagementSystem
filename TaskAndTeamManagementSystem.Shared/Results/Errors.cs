@@ -1,4 +1,4 @@
-﻿namespace TaskAndTeamManagementSystem.Application.Helpers.Results;
+﻿namespace TaskAndTeamManagementSystem.Shared.Results;
 
 public static class Errors
 {

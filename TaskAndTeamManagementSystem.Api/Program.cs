@@ -6,8 +6,11 @@ using TaskAndTeamManagementSystem.Identity;
 using TaskAndTeamManagementSystem.Infrastructure;
 using TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
 using TaskAndTeamManagementSystem.Persistence;
+using TaskAndTeamManagementSystem.Shared.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+LoggingConfiguration.ConfigureSerilog(builder.Configuration);
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+namespace TaskAndTeamManagementSystem.Shared.Extensions;
 
 public static class CommonExtensions
 {

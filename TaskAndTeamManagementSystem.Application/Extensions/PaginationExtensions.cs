@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskAndTeamManagementSystem.Application.Dtos.CommonDtos;
 
-namespace TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+namespace TaskAndTeamManagementSystem.Application.Extensions;
 
 public static class PaginationExtensions
 {

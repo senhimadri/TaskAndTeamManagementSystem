@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 
-namespace TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+namespace TaskAndTeamManagementSystem.Application.Extensions;
 
 public static class ValidationExtensions
 {

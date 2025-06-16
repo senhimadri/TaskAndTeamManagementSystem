@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TaskAndTeamManagementSystem.Application.Helpers.Results;
+using TaskAndTeamManagementSystem.Shared.Results;;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Delete;
 

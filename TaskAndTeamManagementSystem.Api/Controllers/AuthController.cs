@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
 using TaskAndTeamManagementSystem.Application.Features.Auths.GoogleLogin;
-using TaskAndTeamManagementSystem.Application.Features.Auths.GoogleResponse;
 using TaskAndTeamManagementSystem.Application.Features.Auths.Login;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;

@@ -1,4 +1,4 @@
-﻿namespace TaskAndTeamManagementSystem.Application.Helpers.Results;
+﻿namespace TaskAndTeamManagementSystem.Shared.Results;
 
 public sealed class Result
 {

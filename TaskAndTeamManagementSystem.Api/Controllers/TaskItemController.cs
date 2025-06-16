@@ -38,7 +38,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
               onSuccess: () => NoContent(),
               onValidationFailure: validationErrors => ValidationProblem(validationErrors),
               onFailure: error => BadRequest(error)
-);
+            );
     }
 
     [HttpGet("{id}")]
@@ -53,7 +53,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
     public async Task<IActionResult> GetList([FromQuery] TaskItemPaginationQuery query)
     {
         var request = new GetTaskItemListRequest
-        {
+{
             Query= query
         };
 
@@ -67,7 +67,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
         var command = new DeleteTaskItemCommand { Id = id };
         var response = await _mediator.Send(command);
         return response.Match(
-            onSuccess: () => Created(),
+            onSuccess: () => NoContent(),
             onValidationFailure: validationErrors => ValidationProblem(validationErrors),
             onFailure: error => BadRequest(error)
         );

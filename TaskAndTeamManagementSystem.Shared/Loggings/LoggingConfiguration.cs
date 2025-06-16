@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace TaskAndTeamManagementSystem.Infrastructure.Logging;
+namespace TaskAndTeamManagementSystem.Shared.Logging;
 
-public static class SerilogConfiguration
+public static class LoggingConfiguration
 {
     public static void ConfigureSerilog(IConfiguration configuration)
     {

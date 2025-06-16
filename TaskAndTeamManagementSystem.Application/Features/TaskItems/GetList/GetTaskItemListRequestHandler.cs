@@ -4,7 +4,7 @@ using TaskAndTeamManagementSystem.Application.Commons.QueryFilter;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.CommonDtos;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
-using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
+using TaskAndTeamManagementSystem.Application.Extensions;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.GetList;
 

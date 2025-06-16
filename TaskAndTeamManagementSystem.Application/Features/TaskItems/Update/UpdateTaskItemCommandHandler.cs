@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
-using TaskAndTeamManagementSystem.Application.Helpers.Extensions;
-using TaskAndTeamManagementSystem.Application.Helpers.Results;
+using TaskAndTeamManagementSystem.Application.Extensions;
+using TaskAndTeamManagementSystem.Shared.Results;
 using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 
 

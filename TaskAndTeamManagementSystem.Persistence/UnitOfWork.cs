@@ -12,16 +12,12 @@ namespace TaskAndTeamManagementSystem.Persistence
         private bool _disposed = false;
         private bool _asyncDisposed = false;
 
-
-        //private IUserRepository? _userRepository;
-
         private ITaskItemRepository? _taskItemRepository;
 
         private ITeamRepository? _teamRepository;
 
         private IDbContextTransaction? _currentTransaction;
 
-        //public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
         public ITaskItemRepository TaskItemRepository => _taskItemRepository ??= new TaskItemRepository(_context);
         public ITeamRepository TeamRepository => _teamRepository??= new TeamRepository(_context);
 
@@ -41,7 +37,6 @@ namespace TaskAndTeamManagementSystem.Persistence
         {
             try
             {
-                await SaveChangesAsync(cancellationToken);
                 await _currentTransaction?.CommitAsync(cancellationToken)!;
             }
             catch

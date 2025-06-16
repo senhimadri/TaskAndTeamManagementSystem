@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaskAndTeamManagementSystem.Application.Helpers.Results;
+using TaskAndTeamManagementSystem.Shared.Results;
 
 namespace TaskAndTeamManagementSystem.Api.Helpers;
 

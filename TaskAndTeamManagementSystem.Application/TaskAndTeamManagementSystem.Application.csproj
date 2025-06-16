@@ -17,10 +17,12 @@
   <ItemGroup>
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Contracts\TaskAndTeamManagementSystem.Contracts.csproj" />
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Domain\TaskAndTeamManagementSystem.Domain.csproj" />
+    <ProjectReference Include="..\TaskAndTeamManagementSystem.Shared\TaskAndTeamManagementSystem.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Dtos\TeamDtos\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
