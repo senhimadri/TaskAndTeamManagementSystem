@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
-using TaskAndTeamManagementSystem.Shared.Results;;
+using TaskAndTeamManagementSystem.Shared.Results;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Delete;
 

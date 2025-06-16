@@ -22,11 +22,13 @@ public static class InfrastructureServicesRegistration
         });
 
         services.AddMassTransitWithRabbitMQConfiguration<AppDbContext>(configuration);
-
-        services.AddSingleton<IRealTimeNotificationService, SignalRNotificationService>();
         services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
-        services.AddScoped<ICacheService, CacheService>();
+
         services.AddSignalR();
+        services.AddSingleton<IRealTimeNotificationService, SignalRNotificationService>();
+       
+        services.AddScoped<ICacheService, CacheService>();
+
         return services;
     }
 }
