@@ -19,7 +19,7 @@ public static class IdentitySeedData
         await context.Database.EnsureCreatedAsync();
 
 
-        string[] roleNames = { "Admin", "Manager", "Employee","Guest" };
+        string[] roleNames = { "Admin", "Manager", "Employee", "Guest" };
 
         foreach (var roleName in roleNames)
         {
@@ -40,7 +40,7 @@ public static class IdentitySeedData
             }
         }
 
-        var users = new []
+        var users = new[]
         {
                 new { Email = "admin@demo.com", Password = "Admin123!", FullName = "Admin User", Role = "Admin" },
                 new { Email = "manager@demo.com", Password = "Manager123!", FullName = "Manager User", Role = "Manager" },

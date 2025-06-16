@@ -19,7 +19,7 @@ namespace TaskAndTeamManagementSystem.Persistence
         private IDbContextTransaction? _currentTransaction;
 
         public ITaskItemRepository TaskItemRepository => _taskItemRepository ??= new TaskItemRepository(_context);
-        public ITeamRepository TeamRepository => _teamRepository??= new TeamRepository(_context);
+        public ITeamRepository TeamRepository => _teamRepository ??= new TeamRepository(_context);
 
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

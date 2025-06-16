@@ -53,8 +53,8 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
     public async Task<IActionResult> GetList([FromQuery] TaskItemPaginationQuery query)
     {
         var request = new GetTaskItemListRequest
-{
-            Query= query
+        {
+            Query = query
         };
 
         var result = await _mediator.Send(request);

@@ -17,7 +17,7 @@ public class CreateTaskItemCommandHandlerTest
 
     public CreateTaskItemCommandHandlerTest()
     {
-        _mockCurrentUser.Setup(x=>x.UserId).Returns(Guid.NewGuid());
+        _mockCurrentUser.Setup(x => x.UserId).Returns(Guid.NewGuid());
 
         _handler = new CreateTaskItemCommandHandler(
             _mockUnitOfWork.Object,

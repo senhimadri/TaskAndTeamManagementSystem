@@ -1,7 +1,7 @@
 ﻿
 namespace TaskAndTeamManagementSystem.Application.Dtos.AuthDtos;
 
-public record CreateUserPayload(string Name, string Email, string UserName,string Password) : IUserRegistrationDto,IPasswordDto;
+public record CreateUserPayload(string Name, string Email, string UserName, string Password) : IUserRegistrationDto, IPasswordDto;
 public record UpdateUserPayload(string Name, string Email, string UserName) : IUserRegistrationDto;
 public record UpdatePasswordPayload(string Password, string Email, string UserName) : IPasswordDto;
 public record GetUserIdResponse(string Name, string Email, string UserName);

@@ -12,7 +12,7 @@ using TaskAndTeamManagementSystem.Application.Extensions;
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
 public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNotificationService _notifyer,
-                            ICurrentUserService _currentUser, IEventPublisher _eventPublisher) 
+                            ICurrentUserService _currentUser, IEventPublisher _eventPublisher)
                             : IRequestHandler<CreateTaskItemCommand, Result>
 {
     public async Task<Result> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)

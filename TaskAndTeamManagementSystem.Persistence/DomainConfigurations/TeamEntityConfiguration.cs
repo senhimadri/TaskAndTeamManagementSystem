@@ -20,4 +20,4 @@ internal class TeamEntityConfiguration : IEntityTypeConfiguration<Team>
             });
     }
 }
-    
+

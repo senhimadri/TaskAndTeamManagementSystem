@@ -5,7 +5,7 @@ namespace TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
 
 public class SignalRNotificationService(IHubContext<NotificationHub> _hubContext) : IRealTimeNotificationService
 {
-    public async Task SendChatMessageAsync(Guid toUserId, string message) 
+    public async Task SendChatMessageAsync(Guid toUserId, string message)
         => await _hubContext.Clients.User(toUserId.ToString()).SendAsync("ReceiveChatMessage", message);
 
 

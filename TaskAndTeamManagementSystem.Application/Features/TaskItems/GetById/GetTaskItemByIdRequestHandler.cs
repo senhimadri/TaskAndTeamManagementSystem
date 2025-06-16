@@ -10,7 +10,7 @@ internal class GetTaskItemByIdRequestHandler(IUnitOfWork unitOfWork) : IRequestH
 {
     public async Task<GetTaskItemByIdResponse?> Handle(GetTaskItemByIdRequest request, CancellationToken cancellationToken)
     {
-        var query = unitOfWork.TaskItemRepository.TaskItemDetails(x=>x.Id == request.Id);
+        var query = unitOfWork.TaskItemRepository.TaskItemDetails(x => x.Id == request.Id);
 
         var taskItem = await query.ToGetByIdResponse().FirstOrDefaultAsync(cancellationToken);
 

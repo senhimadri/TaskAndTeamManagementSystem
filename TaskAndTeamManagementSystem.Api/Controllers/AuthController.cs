@@ -19,7 +19,7 @@ public class AuthController(IMediator _mediator) : ControllerBase
     }
 
     [HttpPost("google-login")]
-    public async Task<IActionResult> GoogleLogin( string token)
+    public async Task<IActionResult> GoogleLogin(string token)
     {
         var command = new GoogleLoginCommand { Token = token };
         var loginResponse = await _mediator.Send(command);

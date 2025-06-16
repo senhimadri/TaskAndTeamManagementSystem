@@ -8,7 +8,7 @@ namespace TaskAndTeamManagementSystem.Infrastructure.MessageBrokers.Configuratio
 
 internal static class MassTransitConfiguration
 {
-    public static IServiceCollection AddMassTransitWithRabbitMQConfiguration<TDbContext>(this IServiceCollection services , IConfiguration configuration)
+    public static IServiceCollection AddMassTransitWithRabbitMQConfiguration<TDbContext>(this IServiceCollection services, IConfiguration configuration)
                                                                                             where TDbContext : DbContext
     {
         services.AddMassTransit(config =>

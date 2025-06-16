@@ -3,7 +3,7 @@ using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 
 namespace TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
 
-public class TaskItemDtoValidator: AbstractValidator<ITaskItemDto>
+public class TaskItemDtoValidator : AbstractValidator<ITaskItemDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     public TaskItemDtoValidator(IUnitOfWork unitOfWork)

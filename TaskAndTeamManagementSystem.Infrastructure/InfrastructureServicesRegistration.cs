@@ -26,7 +26,7 @@ public static class InfrastructureServicesRegistration
 
         services.AddSignalR();
         services.AddSingleton<IRealTimeNotificationService, SignalRNotificationService>();
-       
+
         services.AddScoped<ICacheService, CacheService>();
 
         return services;

@@ -5,7 +5,7 @@ using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {

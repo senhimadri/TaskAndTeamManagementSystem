@@ -3,11 +3,11 @@ using TaskStatus = TaskAndTeamManagementSystem.Domain.TaskStatus;
 
 namespace TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 
-public record CreateTaskItemPayload(string Title, 
-                                    string? Description, 
-                                    int Status, 
-                                    DateTimeOffset? DueDate, 
-                                    Guid AssignedUserId, 
+public record CreateTaskItemPayload(string Title,
+                                    string? Description,
+                                    int Status,
+                                    DateTimeOffset? DueDate,
+                                    Guid AssignedUserId,
                                     int TeamId) : ITaskItemDto;
 
 public record UpdateTaskItemPayload(string Title,
@@ -25,13 +25,13 @@ public record GetTaskItemByIdResponse(string Title,
                                     Guid AssignedUserId,
                                     string AssignedUserName,
                                     Guid CreatedById,
-                                    string CreatedByName,   
+                                    string CreatedByName,
                                     int? TeamId,
                                     string? TeamName);
 
-public record GetTaskItemsListResponse( long Id,
+public record GetTaskItemsListResponse(long Id,
                                         string Title,
-                                        string Status, 
+                                        string Status,
                                         string AssignedUserName,
                                         string CreatedByName,
                                         string TeamName);

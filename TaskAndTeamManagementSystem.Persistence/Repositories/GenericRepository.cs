@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace TaskAndTeamManagementSystem.Persistence.Repositories;
 
-public class GenericRepository<T,TKey>(AppDbContext dbContext) : IGenericRepository<T,TKey> where T : BaseDomain<TKey>
+public class GenericRepository<T, TKey>(AppDbContext dbContext) : IGenericRepository<T, TKey> where T : BaseDomain<TKey>
 {
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();
 
@@ -14,7 +14,7 @@ public class GenericRepository<T,TKey>(AppDbContext dbContext) : IGenericReposit
     public void Add(T entity) => _dbSet.Add(entity);
     public void AddRange(IEnumerable<T> entities) => _dbSet.AddRange(entities);
     public void Update(T entity) => _dbSet.Update(entity);
-    public void Delete(T entity)=>_dbSet.Remove(entity);
+    public void Delete(T entity) => _dbSet.Remove(entity);
     public void DeleteRange(IEnumerable<T> entities) => _dbSet.RemoveRange(entities);
 
     public async Task<int> CountAsync(Expression<Func<T, bool>> filter) => await _dbSet.CountAsync(filter);

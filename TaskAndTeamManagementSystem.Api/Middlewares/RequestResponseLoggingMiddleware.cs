@@ -17,7 +17,7 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
         var stopwatch = Stopwatch.StartNew();
 
         var originalBodyStream = context.Response.Body;
-        
+
         using var responseBody = new MemoryStream();
         context.Response.Body = responseBody;
         var requestLog = await CaptureRequestDetails(context.Request);
@@ -30,7 +30,7 @@ public class RequestResponseLoggingMiddleware(RequestDelegate _next)
 
             if (!context.Response.HasStarted)
             {
-                var responseLog = await CaptureResponseDetails(context.Response,stopwatch.ElapsedMilliseconds);
+                var responseLog = await CaptureResponseDetails(context.Response, stopwatch.ElapsedMilliseconds);
 
                 var combinedLog = new
                 {

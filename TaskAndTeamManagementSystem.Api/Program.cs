@@ -80,7 +80,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseGlobalExceptionMiddleware(); 
+app.UseGlobalExceptionMiddleware();
 app.UseRouting();
 
 app.Use(async (context, next) =>

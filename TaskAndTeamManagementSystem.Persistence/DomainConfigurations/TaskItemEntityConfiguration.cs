@@ -8,7 +8,7 @@ public class TaskItemEntityConfiguration : IEntityTypeConfiguration<TaskItem>
 {
     public void Configure(EntityTypeBuilder<TaskItem> builder)
     {
-        builder.HasOne(x=> x.AssignedUser)
+        builder.HasOne(x => x.AssignedUser)
             .WithMany(x => x.AssignedTasks)
             .HasForeignKey(x => x.AssignedUserId)
             .OnDelete(DeleteBehavior.Restrict);

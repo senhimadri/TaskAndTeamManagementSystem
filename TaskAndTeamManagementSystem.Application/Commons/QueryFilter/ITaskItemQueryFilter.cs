@@ -22,13 +22,13 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
 
     public ITaskItemQueryFilter IncludeAssignedTo(Guid? Id)
     {
-        filter = filter.And(x => Id == null ||  x.AssignedUserId == Id);
+        filter = filter.And(x => Id == null || x.AssignedUserId == Id);
         return this;
     }
 
     public ITaskItemQueryFilter IncludeCreatedby(Guid? Id)
     {
-        filter = filter.And(x =>Id == null || x.CreatedByUserId == Id);
+        filter = filter.And(x => Id == null || x.CreatedByUserId == Id);
         return this;
     }
 
@@ -41,7 +41,7 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
 
     public ITaskItemQueryFilter IncludeStatus(TaskStatus? Id)
     {
-        filter = filter.And(x =>Id == 0 || x.Status == Id);
+        filter = filter.And(x => Id == 0 || x.Status == Id);
         return this;
     }
 

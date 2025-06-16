@@ -4,7 +4,7 @@ namespace TaskAndTeamManagementSystem.Application.Dtos.AuthDtos.Validator;
 
 public class PasswordDtoValidator : AbstractValidator<IPasswordDto>
 {
-    public PasswordDtoValidator() 
+    public PasswordDtoValidator()
     {
         RuleFor(x => x.Password)
             .NotEmpty().NotNull().WithMessage("Password is required.")

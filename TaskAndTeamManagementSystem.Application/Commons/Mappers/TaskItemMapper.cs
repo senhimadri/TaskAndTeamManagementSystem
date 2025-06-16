@@ -65,8 +65,8 @@ public static class TaskItemMapper
              entity.Title,
              entity.Description,
              (int)entity.Status,
-             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : 
-                entity.Status == Domain.TaskStatus.InProgress ? "In Progress" 
+             entity.Status == Domain.TaskStatus.ToDo ? "To Do" :
+                entity.Status == Domain.TaskStatus.InProgress ? "In Progress"
                 : "Done",
              entity.DueDate,
              entity.AssignedUserId,

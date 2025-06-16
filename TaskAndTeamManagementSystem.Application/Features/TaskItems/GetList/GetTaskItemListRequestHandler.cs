@@ -19,12 +19,12 @@ public class GetTaskItemListRequestHandler(IUnitOfWork unitOfWork) : IRequestHan
                             .IncludeStatus(request.Query.StatusId)
                             .IncludeAssignedTo(request.Query.AssignedUserId)
                             .IncludeCreatedby(request.Query.CreatedById)
-                            .IncludeDueDate(request.Query.FromDate , request.Query.ToDate)
+                            .IncludeDueDate(request.Query.FromDate, request.Query.ToDate)
                             .Build();
 
 
         var employeeList = await unitOfWork.TaskItemRepository
-                        .TaskItemDetails(taskItemFilter,orderBy: x => x.Id , request.Query.IsAscending)
+                        .TaskItemDetails(taskItemFilter, orderBy: x => x.Id, request.Query.IsAscending)
                         .ToGetListResponse()
                         .ToPaginatedResultAsync(request.Query.PageNo, request.Query.PageSize);
 
