@@ -74,6 +74,7 @@ builder.Services.AddControllers();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
+app.MapGet("/", () => "API is running");
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -97,10 +98,10 @@ app.UseRequestResponseLogging();
 app.MapControllers();
 app.MapHub<NotificationHub>("/hub/notifications");
 
-if (app.Environment.IsDevelopment())
-{
-    await app.AddIdentitySeedData();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    await app.AddIdentitySeedData();
+//}
 
 app.Run();
 

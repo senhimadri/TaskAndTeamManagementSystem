@@ -8,6 +8,8 @@ using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
 using TaskAndTeamManagementSystem.Shared.Results;
 using TaskAndTeamManagementSystem.Contracts;
 using TaskAndTeamManagementSystem.Application.Extensions;
+using TaskAndTeamManagementSystem.Domain;
+using Serilog;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
@@ -17,38 +19,44 @@ public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNoti
 {
     public async Task<Result> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
+                .ValidateAsync(request.Payload, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            return validationResult.ToValidationErrorList();
+        }
+        var taskItem = request.Payload.ToEntity(_currentUser.UserId);
+
         await _unitofWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
-                .ValidateAsync(request.Payload, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                return validationResult.ToValidationErrorList();
-            }
-
-            var taskItem = request.Payload.ToEntity(_currentUser.UserId);
-
             await _unitofWork.TaskItemRepository.AddAsync(taskItem);
+
+            await _unitofWork.SaveChangesAsync(cancellationToken);
 
             await _eventPublisher.PublishAsync(new CreateTaskItemEvent(
                 taskItem.Id, taskItem.Title, taskItem.Description,
                 taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
-
-            await _unitofWork.SaveChangesAsync(cancellationToken);
             await _unitofWork.CommitTransactionAsync(cancellationToken);
-
-            await _notifyer.SendNotificationAsync(taskItem.AssignedUserId,
-                $"You are assigned a task, Task Title: {taskItem.Title}");
-
-            return Result.Success();
         }
         catch (Exception)
         {
             await _unitofWork.RollbackTransactionAsync(cancellationToken);
             throw;
         }
+
+        try
+        {
+            await _notifyer.SendNotificationAsync(taskItem.AssignedUserId,
+                                $"You are assigned a task, Task Title: {taskItem.Title}");
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Notification failed for user {UserId}", request.Payload.AssignedUserId);
+        }
+
+        return Result.Success();
     }
 }
