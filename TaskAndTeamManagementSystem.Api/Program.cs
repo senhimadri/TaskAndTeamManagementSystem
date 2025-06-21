@@ -84,12 +84,6 @@ app.UseCors("AllowAll");
 app.UseGlobalExceptionMiddleware();
 app.UseRouting();
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine($"Request: {context.Request.Path}");
-    await next();
-});
-
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();

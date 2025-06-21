@@ -1,15 +1,14 @@
 ﻿using MediatR;
+using Serilog;
 using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.MessageBrokers;
 using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.Notifications;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
-using TaskAndTeamManagementSystem.Shared.Results;
-using TaskAndTeamManagementSystem.Contracts;
 using TaskAndTeamManagementSystem.Application.Extensions;
-using TaskAndTeamManagementSystem.Domain;
-using Serilog;
+using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Shared.Results;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 

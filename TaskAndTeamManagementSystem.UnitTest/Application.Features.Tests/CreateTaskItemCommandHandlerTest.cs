@@ -15,7 +15,7 @@ namespace TaskAndTeamManagementSystem.UnitTest.Application.Features.Tests;
 public class CreateTaskItemCommandHandlerTest
 {
     private readonly Mock<IUnitOfWork> _mockUnitOfWork = new();
-    private readonly Mock<ICurrentUserService> _mockCurrentUserService = new(); 
+    private readonly Mock<ICurrentUserService> _mockCurrentUserService = new();
     private readonly Mock<IRealTimeNotificationService> _mockNotifier = new();
     private readonly Mock<IEventPublisher> _mockEventPublisher = new();
 
@@ -66,7 +66,7 @@ public class CreateTaskItemCommandHandlerTest
 
         _mockNotifier.Setup(x => x.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
-        var result =await _handler.Handle(command,CancellationToken.None);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         Assert.True(result.IsSuccess);
 
