@@ -92,10 +92,10 @@ app.UseRequestResponseLogging();
 app.MapControllers();
 app.MapHub<NotificationHub>("/hub/notifications");
 
-//if (app.Environment.IsDevelopment())
-//{
-//    await app.AddIdentitySeedData();
-//}
+if (app.Environment.IsDevelopment())
+{
+    await app.AddIdentitySeedData();
+}
 
 app.Run();
 
