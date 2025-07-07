@@ -23,6 +23,24 @@ public static class ResultExtensions
         return onFailure(result.Error);
     }
 
+    public static IActionResult Match<T>(this Result<T> result,
+            Func<IActionResult> onSuccess,
+            Func<ValidationProblemDetails, IActionResult> onValidationFailure,
+            Func<Error, IActionResult> onFailure)
+    {
+        if (result.IsSuccess)
+        {
+            return onSuccess();
+        }
+
+        if (result.IsValidationFailure && result.ValidationErrors is not null)
+        {
+            return onValidationFailure(result.ValidationErrors.ToValidationDetails());
+        }
+
+        return onFailure(result.Error);
+    }
+
     public static ValidationProblemDetails ToValidationDetails(this Dictionary<string, string[]> ValidationErrors)
     {
         return new ValidationProblemDetails(ValidationErrors)
