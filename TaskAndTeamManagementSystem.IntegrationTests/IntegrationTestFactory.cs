@@ -1,7 +1,5 @@
 ﻿using MassTransit;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +25,7 @@ internal class IntegrationTestFactory : WebApplicationFactory<Program>, IAsyncLi
 {
     private readonly string _connectionString = "Server=Himaderi-560620;Database=TaskAndTeamManagementSystem-Test-Db;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;TrustServerCertificate=True;";
     private readonly JwtSettings _jwtSettings;
-    private Guid _seededUserId; // Store the Id of the seeded user
+    private Guid _seededUserId; 
 
     public IntegrationTestFactory()
     {

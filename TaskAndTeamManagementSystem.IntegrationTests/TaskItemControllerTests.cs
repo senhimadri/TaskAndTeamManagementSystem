@@ -41,6 +41,15 @@ public class TaskItemControllerTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
+    [Fact]
+    public async Task ProtectedEndpoint_ShouldReturnUnauthorized_WhenTokenIsInvalid()
+    {
+        var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "invalid_token");
+        var response = await client.GetAsync("/api/taskitem");
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
     public Task InitializeAsync() => _factory.InitializeAsync();
     public Task DisposeAsync() => _factory.DisposeAsync();
 }
