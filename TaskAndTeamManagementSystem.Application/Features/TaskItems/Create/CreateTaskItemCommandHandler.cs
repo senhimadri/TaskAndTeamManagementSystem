@@ -14,9 +14,9 @@ namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
 public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNotificationService _notifyer,
                             ICurrentUserService _currentUser, IEventPublisher _eventPublisher)
-                            : IRequestHandler<CreateTaskItemCommand, Result>
+                            : IRequestHandler<CreateTaskItemCommand, Result<long>>
 {
-    public async Task<Result> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
+    public async Task<Result<long>> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
     {
         var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
                 .ValidateAsync(request.Payload, cancellationToken);
@@ -56,6 +56,6 @@ public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNoti
             Log.Warning(ex, "Notification failed for user {UserId}", request.Payload.AssignedUserId);
         }
 
-        return Result.Success();
+        return taskItem.Id;
     }
 }
