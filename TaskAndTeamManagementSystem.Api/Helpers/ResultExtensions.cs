@@ -24,13 +24,13 @@ public static class ResultExtensions
     }
 
     public static IActionResult Match<T>(this Result<T> result,
-            Func<IActionResult> onSuccess,
+            Func< T? ,IActionResult> onSuccess,
             Func<ValidationProblemDetails, IActionResult> onValidationFailure,
             Func<Error, IActionResult> onFailure)
     {
         if (result.IsSuccess)
         {
-            return onSuccess();
+            return onSuccess(result.Value);
         }
 
         if (result.IsValidationFailure && result.ValidationErrors is not null)
