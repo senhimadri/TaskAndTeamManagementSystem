@@ -34,9 +34,9 @@ public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNoti
 
             await _unitofWork.SaveChangesAsync(cancellationToken);
 
-            await _eventPublisher.PublishAsync(new CreateTaskItemEvent(
-                taskItem.Id, taskItem.Title, taskItem.Description,
-                taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
+            //await _eventPublisher.PublishAsync(new CreateTaskItemEvent(
+            //    taskItem.Id, taskItem.Title, taskItem.Description,
+            //    taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
             await _unitofWork.CommitTransactionAsync(cancellationToken);
         }
