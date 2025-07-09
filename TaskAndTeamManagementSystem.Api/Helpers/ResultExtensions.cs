@@ -24,7 +24,7 @@ public static class ResultExtensions
     }
 
     public static IActionResult Match<T>(this Result<T> result,
-            Func< T? ,IActionResult> onSuccess,
+            Func<T?, IActionResult> onSuccess,
             Func<ValidationProblemDetails, IActionResult> onValidationFailure,
             Func<Error, IActionResult> onFailure)
     {

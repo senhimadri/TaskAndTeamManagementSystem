@@ -23,7 +23,7 @@ public class TaskItemController(IMediator _mediator) : ControllerBase
         var command = new CreateTaskItemCommand { Payload = payload };
         var response = await _mediator.Send(command);
 
-        return response.Match( onSuccess: createdItem => CreatedAtAction(
+        return response.Match(onSuccess: createdItem => CreatedAtAction(
                 nameof(GetById),
                 new { id = response.Value },
                 createdItem

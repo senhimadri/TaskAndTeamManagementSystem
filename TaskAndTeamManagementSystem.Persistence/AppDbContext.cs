@@ -6,7 +6,7 @@ using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService? currentUser = null) 
+public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService? currentUser = null)
                                                             : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
