@@ -12,7 +12,7 @@ public static class PersistenceServicesRegistration
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("AppDbConnection")));
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>().AddProblemDetails();
 
         return services;
     }
