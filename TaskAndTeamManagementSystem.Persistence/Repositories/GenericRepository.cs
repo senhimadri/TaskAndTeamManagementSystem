@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace TaskAndTeamManagementSystem.Persistence.Repositories;
 
-public class GenericRepository<T, TKey>(AppDbContext dbContext) : IGenericRepository<T, TKey> where T : BaseDomain<TKey>
+public class GenericRepository<T, TKey>(AppDbContext context) : IGenericRepository<T, TKey> where T : BaseDomain<TKey>
 {
-    private readonly DbSet<T> _dbSet = dbContext.Set<T>();
+    private readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
     public async Task AddRangeAsync(IEnumerable<T> entities) => await _dbSet.AddRangeAsync(entities);
