@@ -37,11 +37,13 @@ public class CreateTaskItemCommandHandlerTest
     (
         Title: "Test Task",
         Description: "This is a test task",
-        Status: (int)Domain.TaskStatus.ToDo,
+        Status: (int)ActivityStatus.ToDo,
         DueDate: DateTimeOffset.UtcNow.AddDays(7),
         AssignedUserId: Guid.NewGuid(),
         TeamId: 1 // Provide a valid TeamId value
     );
+
+  
 
     [Fact]
     public async Task Handle_ValidPayload_ShouldReturnSuccess()

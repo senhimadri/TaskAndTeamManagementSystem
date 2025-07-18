@@ -1,5 +1,4 @@
 ﻿using TaskAndTeamManagementSystem.Domain;
-using TaskStatus = TaskAndTeamManagementSystem.Domain.TaskStatus;
 
 namespace TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 
@@ -18,26 +17,26 @@ public record UpdateTaskItemPayload(string Title,
                                     int TeamId) : ITaskItemDto;
 
 public record GetTaskItemByIdResponse(string Title,
-                                    string? Description,
-                                    int Status,
-                                    string StatusName,
-                                    DateTimeOffset? DueDate,
-                                    Guid AssignedUserId,
-                                    string AssignedUserName,
-                                    Guid CreatedById,
-                                    string CreatedByName,
-                                    int? TeamId,
-                                    string? TeamName);
+                                      string? Description,
+                                      int Status,
+                                      string StatusName,
+                                      DateTimeOffset? DueDate,
+                                      Guid AssignedUserId,
+                                      string AssignedUserName,
+                                      Guid CreatedById,
+                                      string CreatedByName,
+                                      int? TeamId,
+                                      string? TeamName);
 
 public record GetTaskItemsListResponse(long Id,
-                                        string Title,
-                                        string Status,
-                                        string AssignedUserName,
-                                        string CreatedByName,
-                                        string TeamName);
+                                       string Title,
+                                       string Status,
+                                       string AssignedUserName,
+                                       string CreatedByName,
+                                       string TeamName);
 
 public record TaskItemPaginationQuery(string? SearchText,
-                                      TaskStatus StatusId,
+                                      ActivityStatus StatusId,
                                       Guid? AssignedUserId,
                                       Guid? CreatedById,
                                       int TeamId,
