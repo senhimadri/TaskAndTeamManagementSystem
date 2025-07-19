@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService? currentUser = null)
+                                                            : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -43,11 +45,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
             if (entry.State == EntityState.Added)
             {
                 entity.CreateAt = DateTimeOffset.UtcNow;
+                entity.CreatedBy = currentUser?.UserId;
                 entity.IsDelete = false;
             }
             else if (entry.State == EntityState.Modified)
             {
                 entity.UpdateAt = DateTimeOffset.UtcNow;
+                entity.UpdatedBy = currentUser?.UserId;
             }
         }
         return base.SaveChangesAsync(cancellationToken);

@@ -12,43 +12,33 @@ using TaskAndTeamManagementSystem.Shared.Results;
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 
-public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNotificationService _notifyer,
-                            ICurrentUserService _currentUser, IEventPublisher _eventPublisher)
-                            : IRequestHandler<CreateTaskItemCommand, Result>
+public class CreateTaskItemCommandHandler(IUnitOfWork unitofWork, IRealTimeNotificationService notifyer,
+                            ICurrentUserService currentUser, IEventPublisher eventPublisher)
+                            : IRequestHandler<CreateTaskItemCommand, Result<long>>
 {
-    public async Task<Result> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
+    public async Task<Result<long>> Handle(CreateTaskItemCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await new CreateTaskItemPayloadDtoValidator(_unitofWork)
+        var validationResult = await new CreateTaskItemPayloadDtoValidator(unitofWork)
                 .ValidateAsync(request.Payload, cancellationToken);
 
         if (!validationResult.IsValid)
         {
             return validationResult.ToValidationErrorList();
         }
-        var taskItem = request.Payload.ToEntity(_currentUser.UserId);
+        var taskItem = request.Payload.ToEntity(currentUser.UserId);
 
-        await _unitofWork.BeginTransactionAsync(cancellationToken);
-        try
-        {
-            await _unitofWork.TaskItemRepository.AddAsync(taskItem);
+        await unitofWork.TaskItemRepository.AddAsync(taskItem);
 
-            await _unitofWork.SaveChangesAsync(cancellationToken);
+        await unitofWork.SaveChangesAsync(cancellationToken);
 
-            await _eventPublisher.PublishAsync(new CreateTaskItemEvent(
-                taskItem.Id, taskItem.Title, taskItem.Description,
-                taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
+        await eventPublisher.PublishAsync(new CreateTaskItemEvent(
+            taskItem.Id, taskItem.Title, taskItem.Description,
+            taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
-            await _unitofWork.CommitTransactionAsync(cancellationToken);
-        }
-        catch (Exception)
-        {
-            await _unitofWork.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
 
         try
         {
-            await _notifyer.SendNotificationAsync(taskItem.AssignedUserId,
+            await notifyer.SendNotificationAsync(taskItem.AssignedUserId,
                                 $"You are assigned a task, Task Title: {taskItem.Title}");
         }
         catch (Exception ex)
@@ -56,6 +46,6 @@ public class CreateTaskItemCommandHandler(IUnitOfWork _unitofWork, IRealTimeNoti
             Log.Warning(ex, "Notification failed for user {UserId}", request.Payload.AssignedUserId);
         }
 
-        return Result.Success();
+        return taskItem.Id;
     }
 }

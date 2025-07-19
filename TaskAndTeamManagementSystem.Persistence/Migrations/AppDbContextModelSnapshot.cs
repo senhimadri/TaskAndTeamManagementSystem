@@ -241,6 +241,9 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreateAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -266,6 +269,9 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdateAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedUserId");
@@ -288,6 +294,9 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreateAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -300,6 +309,9 @@ namespace TaskAndTeamManagementSystem.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("UpdateAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

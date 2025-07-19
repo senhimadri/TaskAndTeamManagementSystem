@@ -1,13 +1,14 @@
-﻿namespace TaskAndTeamManagementSystem.Shared.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+
+namespace TaskAndTeamManagementSystem.Shared.Extensions;
 
 public static class EnumExtensions
 {
-    public static string GetDisplayName(this Enum enumValue)
+    public static string GetDisplayName(this Enum value)
     {
-        return enumValue.GetType()
-            .GetMember(enumValue.ToString())
-            .FirstOrDefault()?.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false)
-            .Cast<System.ComponentModel.DataAnnotations.DisplayAttribute>()
-            .FirstOrDefault()?.Name ?? enumValue.ToString();
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = field?.GetCustomAttribute<DisplayAttribute>();
+        return attribute?.Name ?? value.ToString();
     }
 }

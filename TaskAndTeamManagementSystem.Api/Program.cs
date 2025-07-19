@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
 using TaskAndTeamManagementSystem.Api.Middlewares;
@@ -72,6 +73,7 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddHealthChecks();
+
 
 var app = builder.Build();
 app.MapGet("/", () => "API is running");

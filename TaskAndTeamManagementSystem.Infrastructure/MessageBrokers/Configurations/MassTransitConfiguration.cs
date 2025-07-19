@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -8,23 +7,16 @@ namespace TaskAndTeamManagementSystem.Infrastructure.MessageBrokers.Configuratio
 
 internal static class MassTransitConfiguration
 {
-    public static IServiceCollection AddMassTransitWithRabbitMQConfiguration<TDbContext>(this IServiceCollection services, IConfiguration configuration)
-                                                                                            where TDbContext : DbContext
+    public static IServiceCollection AddMassTransitWithRabbitMQConfiguration(this IServiceCollection services)
     {
         services.AddMassTransit(config =>
         {
             config.AddConsumers(Assembly.GetEntryAssembly());
 
-            config.AddEntityFrameworkOutbox<TDbContext>(options =>
-            {
-                options.QueryDelay = TimeSpan.FromSeconds(10);
-                options.DisableInboxCleanupService();
-                options.UseSqlServer();
-                options.UseBusOutbox();
-            });
-
             config.UsingRabbitMq((context, configurator) =>
             {
+                var configuration = context.GetService<IConfiguration>();
+
                 var rabbitMqSettings = configuration!.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
 
                 configurator.Host(rabbitMqSettings!.Host, h =>
@@ -33,16 +25,8 @@ internal static class MassTransitConfiguration
                     h.Password(rabbitMqSettings.Password);
                 });
 
-                configurator.ConfigureEndpoints(registration: context,
-                            endpointNameFormatter: new KebabCaseEndpointNameFormatter(prefix: "TaskAndTeamManagementSystem", includeNamespace: false),
-                            configureFilter: endpointConfigurator =>
-                            {
-                                if (endpointConfigurator is IReceiveEndpointConfigurator receiveEndpointConfigurator)
-                                {
-                                    receiveEndpointConfigurator.UseEntityFrameworkOutbox<TDbContext>(context);
-                                }
-                            }
-                            );
+                configurator.ConfigureEndpoints(registration: context, endpointNameFormatter:
+                                new KebabCaseEndpointNameFormatter(prefix: "TaskAndTeamManagementSystem.Api", includeNamespace: false));
 
                 configurator.UseMessageRetry(retryConfig =>
                 {
