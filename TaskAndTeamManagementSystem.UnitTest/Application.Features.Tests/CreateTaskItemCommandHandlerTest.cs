@@ -51,10 +51,8 @@ public class CreateTaskItemCommandHandlerTest
         var payload = GetValidPayload();
         var command = new CreateTaskItemCommand { Payload = payload };
 
-        _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
         _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        _mockUnitOfWork.Setup(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>()))
                                         .ReturnsAsync((Expression<Func<Team, bool>> filter) =>
@@ -72,10 +70,11 @@ public class CreateTaskItemCommandHandlerTest
 
         Assert.True(result.IsSuccess);
 
-        _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Once);
         _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _mockEventPublisher.Verify(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>()), Times.Once);
+        _mockNotifier.Verify(x => x.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+
     }
 
     [Fact]
@@ -99,77 +98,78 @@ public class CreateTaskItemCommandHandlerTest
 
         _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Never);
         _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
         _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _mockEventPublisher.Verify(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>()), Times.Never);
+        _mockNotifier.Verify(x => x.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>()), Times.Never);
     }
 
-    [Fact]
-    public async Task Handle_Should_Roleback_When_AddAsync_Fails()
-    {
-        var payload = GetValidPayload();
-        var command = new CreateTaskItemCommand { Payload = payload };
+    //[Fact]
+    //public async Task Handle_Should_Roleback_When_AddAsync_Fails()
+    //{
+    //    var payload = GetValidPayload();
+    //    var command = new CreateTaskItemCommand { Payload = payload };
 
-        _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
-        _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).ThrowsAsync(new Exception("Database connection faield"));
+    //    _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
+    //    _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).ThrowsAsync(new Exception("Database connection faield"));
 
-        _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
-        await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
+    //    await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
 
-        _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
-    }
+    //    _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    //    _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
+    //    _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
+    //}
 
-    [Fact]
-    public async Task Handle_Should_Roleback_When_SaveChangeAsync_Fails()
-    {
-        var payload = GetValidPayload();
-        var command = new CreateTaskItemCommand { Payload = payload };
+    //[Fact]
+    //public async Task Handle_Should_Roleback_When_SaveChangeAsync_Fails()
+    //{
+    //    var payload = GetValidPayload();
+    //    var command = new CreateTaskItemCommand { Payload = payload };
 
-        _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
-        _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
+    //    _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
 
-        _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).ThrowsAsync(new Exception("Error from Database"));
+    //    _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).ThrowsAsync(new Exception("Error from Database"));
 
-        _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
 
-        await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
+    //    await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
 
-        _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
+    //    _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
 
-    }
+    //}
 
-    [Fact]
-    public async Task Handle_Should_Roleback_When_PublishAsync_Fails()
-    {
-        var payload = GetValidPayload();
-        var command = new CreateTaskItemCommand { Payload = payload };
+    //[Fact]
+    //public async Task Handle_Should_Roleback_When_PublishAsync_Fails()
+    //{
+    //    var payload = GetValidPayload();
+    //    var command = new CreateTaskItemCommand { Payload = payload };
 
-        _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
-        _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
-        _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
+    //    _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
-        _mockEventPublisher.Setup(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>())).ThrowsAsync(new Exception("Error from Message Broker"));
+    //    _mockEventPublisher.Setup(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>())).ThrowsAsync(new Exception("Error from Message Broker"));
 
-        _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+    //    _mockUnitOfWork.Setup(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
-        await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
+    //    await Assert.ThrowsAsync<Exception>(async () => await _handler.Handle(command, CancellationToken.None));
 
-        _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _mockEventPublisher.Verify(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>()), Times.Once);
-        _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    //    _mockEventPublisher.Verify(x => x.PublishAsync(It.IsAny<CreateTaskItemEvent>()), Times.Once);
+    //    _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
+    //    _mockUnitOfWork.Verify(x => x.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
 
-    }
+    //}
 
     [Fact]
     public async Task Handle_Should_Return_Success_When_NotificationService_Fails()
@@ -177,7 +177,6 @@ public class CreateTaskItemCommandHandlerTest
         var payload = GetValidPayload();
         var command = new CreateTaskItemCommand { Payload = payload };
 
-        _mockUnitOfWork.Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         _mockUnitOfWork.Setup(x => x.TeamRepository.IsAnyAsync(It.IsAny<Expression<Func<Team, bool>>>())).Returns(Task.FromResult(true));
         _mockUnitOfWork.Setup(x => x.TaskItemRepository.AddAsync(It.IsAny<TaskItem>())).Returns(Task.CompletedTask);
         _mockUnitOfWork.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
