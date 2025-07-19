@@ -7,7 +7,6 @@ using TaskAndTeamManagementSystem.Infrastructure.Cachings;
 using TaskAndTeamManagementSystem.Infrastructure.MessageBrokers.Configurations;
 using TaskAndTeamManagementSystem.Infrastructure.MessageBrokers.Publishers;
 using TaskAndTeamManagementSystem.Infrastructure.PushNotifications;
-using TaskAndTeamManagementSystem.Persistence;
 
 namespace TaskAndTeamManagementSystem.Infrastructure;
 
@@ -21,7 +20,9 @@ public static class InfrastructureServicesRegistration
             options.InstanceName = "TaskTeamApp_";
         });
 
-        services.AddMassTransitWithRabbitMQConfiguration<AppDbContext>(configuration);
+        services.AddMassTransitWithRabbitMQConfiguration();
+
+
         services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
 
         services.AddSignalR();
