@@ -1,5 +1,6 @@
 ﻿using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Shared.Extensions;
 
 namespace TaskAndTeamManagementSystem.Application.Commons.Mappers;
 
@@ -12,7 +13,7 @@ public static class TaskItemMapper
         {
             Title = dto.Title,
             Description = dto.Description ?? string.Empty,
-            Status = (TaskAndTeamManagementSystem.Domain.TaskStatus)dto.Status,
+            Status = (ActivityStatus)dto.Status,
             DueDate = dto.DueDate ?? DateTimeOffset.UtcNow,
             AssignedUserId = dto.AssignedUserId,
             CreatedByUserId = createdByUserId,
@@ -24,7 +25,7 @@ public static class TaskItemMapper
     {
         entity.Title = dto.Title;
         entity.Description = dto.Description ?? string.Empty;
-        entity.Status = (TaskAndTeamManagementSystem.Domain.TaskStatus)dto.Status;
+        entity.Status = (ActivityStatus)dto.Status;
         entity.DueDate = dto.DueDate ?? DateTimeOffset.UtcNow;
         entity.AssignedUserId = dto.AssignedUserId;
         entity.TeamId = dto.TeamId;
@@ -65,9 +66,7 @@ public static class TaskItemMapper
              entity.Title,
              entity.Description,
              (int)entity.Status,
-             entity.Status == Domain.TaskStatus.ToDo ? "To Do" :
-                entity.Status == Domain.TaskStatus.InProgress ? "In Progress"
-                : "Done",
+             entity.Status.GetDisplayName(),
              entity.DueDate,
              entity.AssignedUserId,
              entity.AssignedUser.Name ?? "Unknown",
@@ -83,7 +82,7 @@ public static class TaskItemMapper
         return query.Select(entity => new GetTaskItemsListResponse(
              entity.Id,
              entity.Title,
-             entity.Status == Domain.TaskStatus.ToDo ? "To Do" : entity.Status == Domain.TaskStatus.InProgress ? "In Progress" : "Done",
+             entity.Status == ActivityStatus.ToDo ? "To Do" : entity.Status == ActivityStatus.InProgress ? "In Progress" : "Done",
              entity.AssignedUser.Name,
              entity.CreatedByUser.Name,
              entity.Team != null ? entity.Team.Name : "Unknown"

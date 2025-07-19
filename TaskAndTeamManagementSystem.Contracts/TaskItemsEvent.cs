@@ -1,5 +1,7 @@
-﻿namespace TaskAndTeamManagementSystem.Contracts;
+﻿using TaskAndTeamManagementSystem.Domain;
 
-public record CreateTaskItemEvent(long Id, string Title, string? Description, Domain.TaskStatus Status, DateTimeOffset? DueDate, Guid AssignedUserId);
-public record UpdateTaskItemEvent(long Id, string Title, string? Description, Domain.TaskStatus Status, DateTimeOffset? DueDate, Guid AssignedUserId);
+namespace TaskAndTeamManagementSystem.Contracts;
+
+public record CreateTaskItemEvent(long Id, string Title, string? Description, ActivityStatus Status, DateTimeOffset? DueDate, Guid AssignedUserId);
+public record UpdateTaskItemEvent(long Id, string Title, string? Description, ActivityStatus Status, DateTimeOffset? DueDate, Guid AssignedUserId);
 public record DeleteTaskItemEvent(long Id);

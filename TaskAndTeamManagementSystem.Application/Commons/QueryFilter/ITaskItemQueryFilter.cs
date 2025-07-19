@@ -1,13 +1,12 @@
 ﻿using LinqKit;
 using System.Linq.Expressions;
 using TaskAndTeamManagementSystem.Domain;
-using TaskStatus = TaskAndTeamManagementSystem.Domain.TaskStatus;
 
 namespace TaskAndTeamManagementSystem.Application.Commons.QueryFilter;
 
 public interface ITaskItemQueryFilter
 {
-    ITaskItemQueryFilter IncludeStatus(TaskStatus? Id);
+    ITaskItemQueryFilter IncludeStatus(ActivityStatus? Id);
     ITaskItemQueryFilter IncludeAssignedTo(Guid? Id);
     ITaskItemQueryFilter IncludeCreatedby(Guid? Id);
     ITaskItemQueryFilter IncludeDueDate(DateTimeOffset? frondate, DateTimeOffset? todate);
@@ -39,7 +38,7 @@ public class TaskItemQueryFilter : ITaskItemQueryFilter
         return this;
     }
 
-    public ITaskItemQueryFilter IncludeStatus(TaskStatus? Id)
+    public ITaskItemQueryFilter IncludeStatus(ActivityStatus? Id)
     {
         filter = filter.And(x => Id == 0 || x.Status == Id);
         return this;

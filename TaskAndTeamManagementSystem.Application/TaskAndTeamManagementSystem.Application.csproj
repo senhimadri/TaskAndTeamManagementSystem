@@ -26,4 +26,8 @@
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Shared\TaskAndTeamManagementSystem.Shared.csproj" />
   </ItemGroup>
 
+<ItemGroup>
+	<InternalsVisibleTo Include="TaskAndTeamManagementSystem.UnitTest" />
+</ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 
 namespace TaskAndTeamManagementSystem.Domain;
 
-public enum TaskStatus
+public enum ActivityStatus
 {
     [Display(Name = "To Do")]
     ToDo = 1,

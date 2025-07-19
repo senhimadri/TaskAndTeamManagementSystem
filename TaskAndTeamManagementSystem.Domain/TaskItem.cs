@@ -5,7 +5,7 @@ public class TaskItem : BaseDomain<long>
     public string Title { get; set; } = default!;
     public string? Description { get; set; }
 
-    public TaskStatus Status { get; set; } = TaskStatus.ToDo;
+    public ActivityStatus Status { get; set; } = ActivityStatus.ToDo;
     public DateTimeOffset? DueDate { get; set; }
 
     public Guid AssignedUserId { get; set; }

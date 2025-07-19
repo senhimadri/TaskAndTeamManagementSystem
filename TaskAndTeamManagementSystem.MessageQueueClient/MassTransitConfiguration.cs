@@ -1,9 +1,7 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace TaskAndTeamManagementSystem.Infrastructure.MessageBrokers.Configurations;
+namespace TaskAndTeamManagementSystem.MessageQueueClient;
 
 internal static class MassTransitConfiguration
 {
@@ -26,7 +24,7 @@ internal static class MassTransitConfiguration
                 });
 
                 configurator.ConfigureEndpoints(registration: context, endpointNameFormatter:
-                                new KebabCaseEndpointNameFormatter(prefix: "TaskAndTeamManagementSystem.Api", includeNamespace: false));
+                                new KebabCaseEndpointNameFormatter(prefix: "TaskAndTeamManagementSystem.MessageQueueClient", includeNamespace: false));
 
                 configurator.UseMessageRetry(retryConfig =>
                 {
