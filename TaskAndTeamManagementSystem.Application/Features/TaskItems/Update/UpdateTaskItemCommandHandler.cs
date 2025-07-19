@@ -1,26 +1,26 @@
 ﻿using MediatR;
+using TaskAndTeamManagementSystem.Application.Commons.Mappers;
+using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.MessageBrokers;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos.Validator;
 using TaskAndTeamManagementSystem.Application.Extensions;
+using TaskAndTeamManagementSystem.Contracts;
 using TaskAndTeamManagementSystem.Shared.Results;
-using TaskAndTeamManagementSystem.Application.Commons.Mappers;
 
 
 namespace TaskAndTeamManagementSystem.Application.Features.TaskItems.Update;
 
-internal class UpdateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHandler<UpdateTaskItemCommand, Result>
+internal class UpdateTaskItemCommandHandler(IUnitOfWork unitofWork, IEventPublisher eventPublisher) : IRequestHandler<UpdateTaskItemCommand, Result>
 {
-    private readonly IUnitOfWork _unitofWork = unitofWork;
-
     public async Task<Result> Handle(UpdateTaskItemCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await new UpdateTaskItemPayloadDtoValidator(_unitofWork)
+        var validationResult = await new UpdateTaskItemPayloadDtoValidator(unitofWork)
                              .ValidateAsync(request.Payload);
 
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();
 
-        var taskItem = await _unitofWork.TaskItemRepository.GetByIdAsync(request.Id);
+        var taskItem = await unitofWork.TaskItemRepository.GetByIdAsync(request.Id);
 
 
         if (taskItem is null)
@@ -28,9 +28,13 @@ internal class UpdateTaskItemCommandHandler(IUnitOfWork unitofWork) : IRequestHa
 
         request.Payload.MapToEntity(taskItem);
 
-        _unitofWork.TaskItemRepository.Update(taskItem);
+        unitofWork.TaskItemRepository.Update(taskItem);
 
-        await _unitofWork.SaveChangesAsync(cancellationToken);
+        await unitofWork.SaveChangesAsync(cancellationToken);
+
+        await eventPublisher.PublishAsync(new UpdateTaskItemEvent(
+                taskItem.Id, taskItem.Title, taskItem.Description,
+                taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
         return Result.Success();
     }

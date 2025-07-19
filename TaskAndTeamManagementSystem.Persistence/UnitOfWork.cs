@@ -35,31 +35,14 @@ namespace TaskAndTeamManagementSystem.Persistence
 
         public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
         {
-            try
-            {
-                await _currentTransaction?.CommitAsync(cancellationToken)!;
-            }
-            catch
-            {
-                await RollbackTransactionAsync(cancellationToken);
-                throw;
-            }
-            finally
-            {
-                await DisposeTransactionAsync();
-            }
+            await _currentTransaction?.CommitAsync(cancellationToken)!;
+            await DisposeTransactionAsync();
         }
 
         public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
         {
-            try
-            {
-                await _currentTransaction?.RollbackAsync(cancellationToken)!;
-            }
-            finally
-            {
-                await DisposeTransactionAsync();
-            }
+            await _currentTransaction?.RollbackAsync(cancellationToken)!;
+            await DisposeTransactionAsync();
         }
 
 
