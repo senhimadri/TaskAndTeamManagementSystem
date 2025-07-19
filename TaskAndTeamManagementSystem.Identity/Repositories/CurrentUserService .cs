@@ -14,7 +14,7 @@ internal class CurrentUserService(IHttpContextAccessor _httpContextAccessor) : I
     public string? UserName => User?.Identity?.Name;
     public string? Email => User?.FindFirstValue(ClaimTypes.Email);
 
-    public IReadOnlyList<string> GetRoles()
+    public IReadOnlyList<string>? GetRoles()
     {
         if (_roles is not null)
         {
@@ -22,7 +22,7 @@ internal class CurrentUserService(IHttpContextAccessor _httpContextAccessor) : I
         }
         _roles = User?.FindAll(ClaimTypes.Role)
             .Select(role => role.Value)
-            .ToList() ?? new();
+            .ToList();
 
         return _roles;
     }

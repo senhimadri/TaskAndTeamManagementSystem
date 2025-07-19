@@ -7,7 +7,7 @@ public interface ICurrentUserService
     Guid UserId { get; }
     string? UserName { get; }
     string? Email { get; }
-    IReadOnlyList<string> GetRoles();
+    IReadOnlyList<string>? GetRoles();
     bool IsAuthenticated { get; }
     IEnumerable<Claim> Claims { get; }
 }
