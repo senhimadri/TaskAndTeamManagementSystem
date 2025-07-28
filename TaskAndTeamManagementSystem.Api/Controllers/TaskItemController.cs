@@ -11,7 +11,7 @@ using TaskAndTeamManagementSystem.Application.Features.TaskItems.Update;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 [ProducesResponseType(500)]

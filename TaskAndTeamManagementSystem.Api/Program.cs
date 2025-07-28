@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
 using TaskAndTeamManagementSystem.Api.Middlewares;
@@ -94,7 +93,7 @@ app.UseRequestResponseLogging();
 app.MapControllers();
 app.MapHub<NotificationHub>("/hub/notifications");
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     await app.AddIdentitySeedData();
 }

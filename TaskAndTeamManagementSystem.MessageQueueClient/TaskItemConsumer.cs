@@ -8,7 +8,6 @@ public class TaskItemConsumer : IConsumer<CreateTaskItemEvent>, IConsumer<Update
     public Task Consume(ConsumeContext<CreateTaskItemEvent> context)
     {
         Console.WriteLine($"Received CreateTaskItemEvent: {context.Message.Id}, Title: {context.Message.Title}, AssignedUserId: {context.Message.AssignedUserId}");
-
         return Task.CompletedTask;
     }
     public Task Consume(ConsumeContext<UpdateTaskItemEvent> context)
