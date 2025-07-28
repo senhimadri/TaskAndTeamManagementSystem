@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TaskAndTeamManagementSystem.Persistence
 {
-    internal class UnitOfWork(AppDbContext context) : IUnitOfWork
+    public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
         private readonly AppDbContext _context = context;
 
