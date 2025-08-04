@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Bases;
+using TaskAndTeamManagementSystem.Domain.Identities;
 
 namespace TaskAndTeamManagementSystem.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService? currentUser = null)
-                                                            : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
+                                                            : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, UserClaim, UserRole, UserLogin,RoleClaim, UserToken>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {

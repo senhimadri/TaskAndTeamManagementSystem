@@ -1,4 +1,6 @@
-﻿namespace TaskAndTeamManagementSystem.Domain;
+﻿using TaskAndTeamManagementSystem.Domain.Bases;
+
+namespace TaskAndTeamManagementSystem.Domain;
 
 public class Team : BaseDomain<int>
 {

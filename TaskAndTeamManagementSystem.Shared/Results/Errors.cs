@@ -4,6 +4,7 @@ public static class Errors
 {
     public static readonly Error TaskNotFound = new Error(404, "Task not found");
     public static readonly Error TeamNotFound = new Error(404, "Team not found");
+    public static readonly Error UserNotFound = new Error(404, "User not found");
 
     public static readonly Error UserNotAuthenticated = new Error(401, "User is not authenticated.");
 

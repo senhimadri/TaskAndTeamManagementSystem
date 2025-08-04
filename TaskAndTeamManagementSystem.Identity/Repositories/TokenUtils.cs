@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
-using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Identities;
 
 namespace TaskAndTeamManagementSystem.Identity.Repositories;
 

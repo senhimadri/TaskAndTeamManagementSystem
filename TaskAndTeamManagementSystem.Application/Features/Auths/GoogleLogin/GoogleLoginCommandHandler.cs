@@ -4,7 +4,6 @@ using TaskAndTeamManagementSystem.Application.Contracts.Identities;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDtos;
-using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.Application.Features.Auths.GoogleLogin;
 
@@ -31,7 +30,7 @@ public class GoogleLoginCommandHandler(ITokenUtils _tokenUtils, IIdentityUnitOfW
         var user = await _unitOfWork.UserManager.FindByEmailAsync(googleUser.Email);
         if (user == null)
         {
-            user = new ApplicationUser
+            user = new Domain.Identities.ApplicationUser
             {
                 Name = googleUser.Name,
                 UserName = googleUser.Email,

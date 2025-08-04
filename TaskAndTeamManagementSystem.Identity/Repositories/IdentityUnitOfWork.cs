@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
-using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Identities;
 using TaskAndTeamManagementSystem.Persistence;
 
 namespace TaskAndTeamManagementSystem.Identity.Repositories;

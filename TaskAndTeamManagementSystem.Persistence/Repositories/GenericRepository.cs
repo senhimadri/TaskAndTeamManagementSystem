@@ -1,7 +1,7 @@
 ﻿using TaskAndTeamManagementSystem.Application.Contracts.Persistences.IRepositories;
-using TaskAndTeamManagementSystem.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TaskAndTeamManagementSystem.Domain.Bases;
 
 namespace TaskAndTeamManagementSystem.Persistence.Repositories;
 

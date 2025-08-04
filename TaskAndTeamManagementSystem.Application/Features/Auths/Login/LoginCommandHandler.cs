@@ -23,8 +23,6 @@ internal class LoginCommandHandler(IIdentityUnitOfWork unitOfWork, ITokenUtils t
         var accessToken = tokenUtils.GenerateAccessToken(user, roles);
         var refreshToken = tokenUtils.GenerateRefreshToken(user.Id);
 
-        user.RefreshToken = refreshToken;
-
         await unitOfWork.SaveChangesAsync();
 
         return new LoginResponse(accessToken, refreshToken);
