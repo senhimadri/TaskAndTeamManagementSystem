@@ -1,5 +1,4 @@
-﻿using TaskAndTeamManagementSystem.Domain;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace TaskAndTeamManagementSystem.Application.Contracts.Persistences.IRepositories;
 

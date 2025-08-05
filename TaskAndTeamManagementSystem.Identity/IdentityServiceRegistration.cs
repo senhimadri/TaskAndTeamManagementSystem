@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
-using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Identities;
 using TaskAndTeamManagementSystem.Identity.Repositories;
 using TaskAndTeamManagementSystem.Persistence;
 
@@ -74,8 +76,25 @@ public static class IdentityServiceRegistration
                 }
             };
         });
+       
 
-        services.AddAuthorization();
+        services.AddAuthorization(options=>
+        {
+            options.AddPolicy("Admin", policy =>
+                    policy.RequireRole("Admin"));
+
+            options.AddPolicy("Manager", policy =>
+                    policy.RequireRole("Manager", "Admin"));
+
+            options.AddPolicy("Employee", policy =>
+                    policy.RequireRole("Manager", "Admin", "Employee"));
+
+            options.AddPolicy("Guest", policy =>
+                    policy.RequireRole("Manager", "Admin", "Employee", "Guest"));
+        });
+        services.AddTransient<IAuthorizationHandler, OwnTaskAuthorizationHandler>();
+        services.AddTransient<IAuthorizationHandler, OwnUserAuthorizationHandler>();
+
 
         return services;
     }

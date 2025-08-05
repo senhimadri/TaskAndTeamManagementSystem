@@ -11,13 +11,13 @@ using TaskAndTeamManagementSystem.Application.Features.Teams.Update;
 
 namespace TaskAndTeamManagementSystem.Api.Controllers;
 
-[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 [ProducesResponseType(500)]
 public class TeamController(IMediator _mediator) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Policy ="Admin")]
     public async Task<IActionResult> Create([FromBody] CreateTeamPayload payload)
     {
         var command = new CreateTeamCommand { Payload = payload };
@@ -31,6 +31,7 @@ public class TeamController(IMediator _mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateTeamPayload payload)
     {
         var command = new UpdateTeamCommand { Id = id, Payload = payload };
@@ -43,6 +44,7 @@ public class TeamController(IMediator _mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Policy = "Admin")]
     public async Task<IActionResult> GetById(int id)
     {
         var query = new GetTeamByIdRequest { Id = id };
@@ -51,6 +53,7 @@ public class TeamController(IMediator _mediator) : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "Admin")]
     public async Task<IActionResult> GetList([FromQuery] TeamPaginationQuery query)
     {
         var request = new GetTeamListRequest { Query = query };
@@ -59,6 +62,7 @@ public class TeamController(IMediator _mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var command = new DeleteTeamCommand { Id = id };

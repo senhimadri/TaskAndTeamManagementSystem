@@ -1,4 +1,7 @@
-﻿namespace TaskAndTeamManagementSystem.Domain;
+﻿using TaskAndTeamManagementSystem.Domain.Bases;
+using TaskAndTeamManagementSystem.Domain.Identities;
+
+namespace TaskAndTeamManagementSystem.Domain;
 
 public class TaskItem : BaseDomain<long>
 {

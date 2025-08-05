@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence.Repositories.Tests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskAndTeamManagementSystem.Application\TaskAndTeamManagementSystem.Application.csproj" />
   </ItemGroup>
 

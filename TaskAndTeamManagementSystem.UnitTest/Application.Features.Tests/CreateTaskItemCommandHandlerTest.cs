@@ -8,7 +8,6 @@ using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
 using TaskAndTeamManagementSystem.Contracts;
 using TaskAndTeamManagementSystem.Domain;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TaskAndTeamManagementSystem.UnitTest.Application.Features.Tests;
 

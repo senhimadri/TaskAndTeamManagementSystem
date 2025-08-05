@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Identities;
 
 namespace TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
 

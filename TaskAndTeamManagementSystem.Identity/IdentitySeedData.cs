@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TaskAndTeamManagementSystem.Domain;
+using TaskAndTeamManagementSystem.Domain.Identities;
 using TaskAndTeamManagementSystem.Persistence;
 
 namespace TaskAndTeamManagementSystem.Identity;
@@ -35,7 +35,7 @@ public static class IdentitySeedData
                 var roleResult = await roleManager.CreateAsync(role);
                 if (!roleResult.Succeeded)
                 {
-                    throw new Exception($"Failed to create role");
+                    throw new InvalidOperationException($"Failed to create role");
                 }
             }
         }
@@ -71,12 +71,12 @@ public static class IdentitySeedData
                     var roleResult = await userManager.AddToRoleAsync(user, userData.Role);
                     if (!roleResult.Succeeded)
                     {
-                        throw new Exception($"Failed to assign role {userData.Role} to user {userData.Email}");
+                        throw new InvalidOperationException($"Failed to assign role {userData.Role} to user {userData.Email}");
                     }
                 }
                 else
                 {
-                    throw new Exception($"Failed to create user {userData.Email}");
+                    throw new InvalidOperationException($"Failed to create user {userData.Email}");
                 }
             }
         }
