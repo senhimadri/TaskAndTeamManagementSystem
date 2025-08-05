@@ -12,7 +12,7 @@ using TaskAndTeamManagementSystem.Persistence;
 namespace TaskAndTeamManagementSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250804093750_InitialScript")]
+    [Migration("20250804142118_InitialScript")]
     partial class InitialScript
     {
         /// <inheritdoc />
