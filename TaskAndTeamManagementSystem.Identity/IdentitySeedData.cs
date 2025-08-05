@@ -15,7 +15,7 @@ public static class IdentitySeedData
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        // Ensure database is created
+
         await context.Database.EnsureCreatedAsync();
 
 
@@ -50,7 +50,6 @@ public static class IdentitySeedData
                 new { Email = "employee-03@demo.com", Password = "Employee123!", FullName = "Employee 03 User", Role = "Employee" },
         };
 
-        // Seed users
         foreach (var userData in users)
         {
             var user = await userManager.FindByEmailAsync(userData.Email);
@@ -94,7 +93,7 @@ public static class IdentitySeedData
         }
         catch (Exception)
         {
-            throw;
+            throw new InvalidOperationException($"Failed Seed Data");
         }
     }
 }
