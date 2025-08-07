@@ -22,7 +22,6 @@ internal class UpdateTaskItemCommandHandler(IUnitOfWork unitofWork, IEventPublis
 
         var taskItem = await unitofWork.TaskItemRepository.GetByIdAsync(request.Id);
 
-
         if (taskItem is null)
             return Errors.TaskNotFound;
 
@@ -32,9 +31,8 @@ internal class UpdateTaskItemCommandHandler(IUnitOfWork unitofWork, IEventPublis
 
         await unitofWork.SaveChangesAsync(cancellationToken);
 
-        await eventPublisher.PublishAsync(new UpdateTaskItemEvent(
-                taskItem.Id, taskItem.Title, taskItem.Description,
-                taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
+        await eventPublisher.PublishAsync(new UpdateTaskItemEvent(taskItem.Id, taskItem.Title, taskItem.Description,
+                                     taskItem.Status, taskItem.DueDate, taskItem.AssignedUserId));
 
         return Result.Success();
     }

@@ -22,9 +22,8 @@ public class CreateTaskItemCommandHandler(IUnitOfWork unitofWork, IRealTimeNotif
                 .ValidateAsync(request.Payload, cancellationToken);
 
         if (!validationResult.IsValid)
-        {
             return validationResult.ToValidationErrorList();
-        }
+        
         var taskItem = request.Payload.ToEntity(currentUser.UserId);
 
         await unitofWork.TaskItemRepository.AddAsync(taskItem);

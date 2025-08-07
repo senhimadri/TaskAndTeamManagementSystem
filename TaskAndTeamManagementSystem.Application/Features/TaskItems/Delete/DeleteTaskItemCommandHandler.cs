@@ -16,9 +16,7 @@ internal class DeleteTaskItemCommandHandler(IUnitOfWork unitofWork, IEventPublis
         if (employee is null)
             return Errors.TaskNotFound;
 
-        employee.IsDelete = true;
-
-        unitofWork.TaskItemRepository.Update(employee);
+        unitofWork.TaskItemRepository.Delete(employee);
 
         await unitofWork.SaveChangesAsync(cancellationToken);
 
