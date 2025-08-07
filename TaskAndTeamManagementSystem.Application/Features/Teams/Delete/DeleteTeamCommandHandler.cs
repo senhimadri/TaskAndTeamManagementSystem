@@ -12,8 +12,8 @@ public class DeleteTeamCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<
         if (team is null)
             return Errors.TeamNotFound;
 
-        team.IsDelete = true;
-        unitOfWork.TeamRepository.Update(team);
+        unitOfWork.TeamRepository.Delete(team);
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
