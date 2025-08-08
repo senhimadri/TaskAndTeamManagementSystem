@@ -15,7 +15,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserSe
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {
-
         var entityTypes = builder.Model.GetEntityTypes()
                             .Where(entityType => typeof(IBaseDomain).IsAssignableFrom(entityType.ClrType))
                             .Select(entityType => entityType.ClrType);

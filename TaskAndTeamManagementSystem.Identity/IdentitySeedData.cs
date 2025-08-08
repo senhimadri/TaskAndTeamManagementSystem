@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using TaskAndTeamManagementSystem.Domain.Identities;
 using TaskAndTeamManagementSystem.Persistence;
 
@@ -91,8 +92,9 @@ public static class IdentitySeedData
         {
             await InitializeAsync(services);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Log.Error(ex, "An error occurred while seeding the identity data.");
             throw new InvalidOperationException($"Failed Seed Data");
         }
     }

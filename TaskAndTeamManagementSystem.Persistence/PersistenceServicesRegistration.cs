@@ -10,7 +10,19 @@ public static class PersistenceServicesRegistration
     public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("AppDbConnection")));
+        {
+            var connectionstring = configuration.GetConnectionString("AppDbConnection");
+
+            options.UseSqlServer(connectionstring, sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(5),
+                errorNumbersToAdd: null
+                );
+            });
+        });
+
 
         services.AddScoped<IUnitOfWork, UnitOfWork>().AddProblemDetails();
 
