@@ -75,11 +75,7 @@ builder.Services.AddHealthChecks();
 
 
 var app = builder.Build();
-<<<<<<< Updated upstream
-app.MapGet("/", () => "API is running");
-=======
-app.MapGet("/", () => "API is running from Docker Image v2 + ass");
->>>>>>> Stashed changes
+app.MapGet("/", () => "API is running from Docker Image v2");
 
 app.UseSwagger();
 app.UseSwaggerUI();

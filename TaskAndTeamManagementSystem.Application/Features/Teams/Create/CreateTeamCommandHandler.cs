@@ -12,11 +12,14 @@ public class CreateTeamCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<
     public async Task<Result<int>> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
     {
         var validationResult = await new CreateTeamPayloadDtoValidator().ValidateAsync(request.Payload, cancellationToken);
+
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorList();
 
         var team = request.Payload.ToEntity();
+
         await unitOfWork.TeamRepository.AddAsync(team);
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return team.Id;
