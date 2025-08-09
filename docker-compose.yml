@@ -1,0 +1,133 @@
+version: '3.8'
+
+services:
+
+  task-api:
+    image: senhimadri/taskandteammanagementsystem-task-api:latest
+    container_name: task-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__AppDbConnection: "Server=mssql-db;Database=TaskDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;"
+      ConnectionStrings__RedisConnection: redis:6379
+      RabbitMQSettings__Host: rabbitmq
+      RabbitMQSettings__UserName: Sa
+      RabbitMQSettings__Password: #54987jshd&%4
+      ElasticSearch__Url: http://elastic-search:9200
+    depends_on:
+      - mssql-db
+      - redis
+      - rabbitmq
+      - elasticsearch
+    networks:
+      - mssql-network
+      - redis-network
+      - rabbitmq-net
+      - elk-network
+      - default
+
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2019-CU19-ubuntu-20.04
+    container_name: mssql-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Enterprise
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-db-data:/var/opt/mssql
+    networks:
+      - mssql-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong@Passw0rd", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  elasticsearch:
+    container_name: elastic-search
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - elk-network
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:7.17.0
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    networks:
+      - elk-network
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elastic-search:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk-network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=Sa
+      - RABBITMQ_DEFAULT_PASS=#54987jshd&%4
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - rabbitmq-net
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    restart: unless-stopped
+    networks:
+      - redis-network
+
+volumes:
+  postgres-db-data:
+  elasticsearch-data:
+  mssql-db-data:
+  rabbitmq-data:
+
+networks:
+  elk-network:
+    driver: bridge
+  mssql-network:
+    driver: bridge
+  rabbitmq-net:
+    driver: bridge
+  redis-network:
+    driver: bridge
