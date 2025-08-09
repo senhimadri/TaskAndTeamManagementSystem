@@ -3,16 +3,14 @@ version: '3.8'
 services:
 
   task-api:
-    build:
-      context: .
-      dockerfile: TaskAndTeamManagementSystem.Api/Dockerfile
+    image: senhimadri/taskandteammanagementsystem-task-api:latest
     container_name: task-api
     ports:
       - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Server=mssql-db;Database=TaskDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;"
-      Redis__Host: redis
+      ConnectionStrings__AppDbConnection: "Server=mssql-db;Database=TaskDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;"
+      ConnectionStrings__RedisConnection: redis:6379
       RabbitMQSettings__Host: rabbitmq
       RabbitMQSettings__UserName: Sa
       RabbitMQSettings__Password: #54987jshd&%4
