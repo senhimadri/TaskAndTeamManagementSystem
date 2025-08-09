@@ -54,13 +54,13 @@ A robust, modular web application for managing tasks and teams, built with ASP.N
 
 ## Key Endpoints
 
-- `POST /api/auth/login` — User login
-- `POST /api/auth/google-login` — Google OAuth login
-- `POST /api/taskitem` — Create a new task
-- `GET /api/taskitem/{id}` — Get task by ID
-- `GET /api/taskitem` — List all tasks
-- `POST /api/team` — Create a new team
-- `GET /api/team` — List all teams
+- `POST /api/auth/login` â€” User login
+- `POST /api/auth/google-login` â€” Google OAuth login
+- `POST /api/taskitem` â€” Create a new task
+- `GET /api/taskitem/{id}` â€” Get task by ID
+- `GET /api/taskitem` â€” List all tasks
+- `POST /api/team` â€” Create a new team
+- `GET /api/team` â€” List all teams
 
 ## Technologies Used
 
@@ -75,7 +75,3 @@ A robust, modular web application for managing tasks and teams, built with ASP.N
 ## Contributing
 
 Contributions are welcome! Please open issues or submit pull requests for improvements.
-
-## License
-
-This project is licensed under the MIT License.
