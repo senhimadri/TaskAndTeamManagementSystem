@@ -1,77 +1,128 @@
-# Task and Team Management System
+# 🚀 Task and Team Management System
 
-A robust, modular web application for managing tasks and teams, built with ASP.NET Core (.NET 8), MediatR, and a clean architecture approach. The system supports user authentication (including Google login), task and team management, and integrates with message queues for event-driven features.
+A **robust, modular, and scalable web application** built with **ASP.NET Core (.NET 8)**, following a **Clean Architecture** approach, and powered by **MediatR** for streamlined request handling.  
 
-## Features
+The system enables seamless **task and team management**, with **real-time collaboration**, **secure authentication (including Google login)**, and **enterprise-grade observability and performance**.  
 
-- **User Authentication**
-  - Standard login and Google OAuth support
-  - JWT-based authentication and refresh tokens
+---
+
+## 🌟 Key Highlights
+
+- **Real-time notifications**
+- **Caching** for optimized performance  
+- **gRPC** for high-performance service-to-service communication  
+- **SMTP mail notifications** for alerts and reminders  
+- **Advanced logging & monitoring** with **ELK integration**  
+- **Event-driven messaging queues** for resilience and scalability  
+- **Comprehensive testing** (unit & integration) to ensure reliability  
+- **Automated CI/CD pipeline** for seamless deployment  
+
+---
+
+## 🔑 Features
+
+- **User Authentication & Authorization**
+  - ASP.NET Core Identity integration  
+  - JWT-based authentication & refresh tokens  
+  - Google OAuth login support
+  - Role, policy, and attribute-based authorization
 
 - **Task Management**
-  - CRUD operations for tasks
-  - Task assignment and status tracking
+  - Full CRUD operations for tasks  
+  - Task assignment and status tracking  
 
 - **Team Management**
-  - Create, update, and list teams
-  - Assign users to teams
+  - Create, update, and list teams  
+  - Assign users to teams  
 
 - **Event-Driven Architecture**
-  - Message queue integration for task events
+  - RabbitMQ integration for task-related events  
+
+- **Real-time notification **
+  - SignalR for instant updates
 
 - **Robust Middleware**
-  - Request/response logging
-  - Global exception handling
+  - Request/response logging  
+  - Centralized exception handling  
 
 - **Testing**
-  - Unit and integration tests for core features
+  - Unit and integration tests for core features  
 
-## Project Structure
+---
 
-## Getting Started
+## 📂 Project Structure
 
-### Prerequisites
+> The solution follows **Clean Architecture**, separating concerns into distinct layers:  
+- **API Layer** (Controllers, Authentication, Swagger)  
+- **Application Layer** (CQRS with MediatR, DTOs, Business Rules)  
+- **Domain Layer** (Entities, Aggregates, Core Logic)  
+- **Infrastructure Layer** (EF Core, Identity, RabbitMQ, SMTP, Caching, Logging)  
+- **Tests Layer** (Unit & Integration tests)  
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- SQL Server or compatible database
-- (Optional) RabbitMQ or other message queue for event-driven features
+---
 
-### Setup
+## 🛠️ Getting Started
 
-1. **Clone the repository:**
+### ✅ Prerequisites
 
-2. **Configure the database:**
-   - Update the connection string in `appsettings.json` under the `Api` project.
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)  
+- SQL Server or compatible database  
+- Docker & Docker Compose
 
-3. **Apply migrations:**
-   - Run the following command in the `Api` project directory:
-	 ```bash
-	 dotnet ef database update
-	 ```
 
-5. **API Documentation:**
-   - Swagger UI is available at `https://localhost:{port}/swagger` when running locally.
+### ⚡ Setup
 
-## Key Endpoints
+1. **Start dependencies**:  
+   ```bash
+   docker-compose up -d
+   ```
+   Spins up SQL Server, RabbitMQ, Redis, and ELK Stack.
 
-- `POST /api/auth/login` — User login
-- `POST /api/auth/google-login` — Google OAuth login
-- `POST /api/taskitem` — Create a new task
-- `GET /api/taskitem/{id}` — Get task by ID
-- `GET /api/taskitem` — List all tasks
-- `POST /api/team` — Create a new team
-- `GET /api/team` — List all teams
+2. **Configure database**:  
+   Update `appsettings.json` connection string and apply migrations:  
+   ```bash
+   dotnet ef database update --project Api
 
-## Technologies Used
+3. **Run the app**:  
+   ```bash
+   dotnet run --project Api
+   ```
 
+4. **API Documentation**:  
+   Swagger UI at `https://localhost:{port}/swagger`
+
+
+### Key Endpoints
+- **POST** `/api/auth/login` — Standard login
+- **POST** `/api/auth/google-login` — Google OAuth login
+- **POST** `/api/taskitem` — Create a new task
+- **GET** `/api/taskitem/{id}` — Get task by ID
+- **GET** `/api/taskitem` — List all tasks
+- **POST** `/api/team` — Create a new team
+- **GET** `/api/team` — List all teams
+
+## 🛠️ Tech Stack
 - ASP.NET Core 8
 - MediatR (CQRS)
 - Entity Framework Core
-- JWT Authentication
+- ASP.NET Core Identity
+- JWT Authentication & Google OAuth
+- SignalR (real-time notifications)
+- gRPC (service-to-service communication)
+- RabbitMQ (event-driven messaging)
+- Redis (caching)
 - FluentValidation
-- RabbitMQ (for message queue)
 - xUnit (testing)
+- ELK Stack (Elasticsearch, Logstash, Kibana) for logging & search
 
-## Contributing
+## 🚀 Future Enhancements
+- GraphQL API support for flexible queries
+- ELK Index-based search for faster and richer task queries
+- Grafana & Prometheus for real-time monitoring and metrics
+- Distributed Tracing (Jaeger / OpenTelemetry) for debugging microservices
+- Kubernetes Deployment with Helm charts for cloud-native scaling
+- Service Mesh (Istio/Linkerd) for secure, observable service communication
 
-Contributions are welcome! Please open issues or submit pull requests for improvements.
+## 🤝 Contributing
+Contributions are welcome! 🎉  
+Please open an issue or submit a pull request for improvements.
