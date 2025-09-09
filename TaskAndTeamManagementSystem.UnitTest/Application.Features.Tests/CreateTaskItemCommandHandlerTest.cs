@@ -6,7 +6,7 @@ using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.Notificat
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Create;
-using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Contracts.Events;
 using TaskAndTeamManagementSystem.Domain;
 
 namespace TaskAndTeamManagementSystem.UnitTest.Application.Features.Tests;

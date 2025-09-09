@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
+using TaskAndTeamManagementSystem.Api.GrpcServices;
 using TaskAndTeamManagementSystem.Api.Middlewares;
 using TaskAndTeamManagementSystem.Application;
 using TaskAndTeamManagementSystem.Identity;
@@ -91,6 +92,8 @@ app.UseAuthorization();
 app.UseRateLimiter();
 app.UseRequestResponseLogging();
 app.MapControllers();
+app.MapGrpcService<TaskItemGrpcService>();
+
 app.MapHub<NotificationHub>("/hub/notifications");
 
 if (!app.Environment.IsProduction())

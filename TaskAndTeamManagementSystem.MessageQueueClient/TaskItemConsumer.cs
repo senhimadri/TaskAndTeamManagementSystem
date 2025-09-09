@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Contracts.Events;
 
 namespace TaskAndTeamManagementSystem.MessageQueueClient;
 

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "TaskAndTeamManagementSystem.Contracts.Protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+package taskItem;
+
+message GetTaskItemRequest {
+  int64 id = 1;
+}
+
+message TaskItemResponse {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  int32 status = 4;
+  string status_name = 5;
+  google.protobuf.Timestamp due_date = 6; 
+  string assigned_user_id = 7; 
+  string assigned_user_name = 8;
+  string created_by_id = 9; 
+  string created_by_name = 10;
+  google.protobuf.Int32Value team_id = 11; 
+  string team_name = 12; 
+}
+
+service TaskItemService {
+  rpc GetTaskItem (GetTaskItemRequest) returns (TaskItemResponse);
+}

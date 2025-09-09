@@ -5,7 +5,7 @@ using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences.IRepositories;
 using TaskAndTeamManagementSystem.Application.Dtos.TaskItemDtos;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Update;
-using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Contracts.Events;
 using TaskAndTeamManagementSystem.Domain;
 using TaskAndTeamManagementSystem.Shared.Results;
 

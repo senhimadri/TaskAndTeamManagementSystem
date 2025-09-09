@@ -2,7 +2,7 @@
 using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.MessageBrokers;
 using TaskAndTeamManagementSystem.Application.Contracts.Persistences;
 using TaskAndTeamManagementSystem.Application.Features.TaskItems.Delete;
-using TaskAndTeamManagementSystem.Contracts;
+using TaskAndTeamManagementSystem.Contracts.Events;
 using TaskAndTeamManagementSystem.Domain;
 using TaskAndTeamManagementSystem.Shared.Results;
 
