@@ -73,6 +73,7 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddHealthChecks();
+builder.Services.AddGrpc();
 
 
 var app = builder.Build();
@@ -98,7 +99,7 @@ app.MapHub<NotificationHub>("/hub/notifications");
 
 if (!app.Environment.IsProduction())
 {
-    await app.AddIdentitySeedData();
+    //await app.AddIdentitySeedData();
 }
 
 app.Run();

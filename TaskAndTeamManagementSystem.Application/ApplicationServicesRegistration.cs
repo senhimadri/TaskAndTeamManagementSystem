@@ -9,7 +9,6 @@ public static class ApplicationServicesRegistration
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddHttpClient();
 
         return services;
     }

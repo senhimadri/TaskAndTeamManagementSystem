@@ -2,29 +2,22 @@
 using System.Text.Json;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities;
 using TaskAndTeamManagementSystem.Application.Contracts.Identities.IRepositories;
+using TaskAndTeamManagementSystem.Application.Contracts.Infrastructure.HttpClients;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDto;
 using TaskAndTeamManagementSystem.Application.Dtos.AuthDtos;
 
 namespace TaskAndTeamManagementSystem.Application.Features.Auths.GoogleLogin;
 
-public class GoogleLoginCommandHandler(ITokenUtils _tokenUtils, IIdentityUnitOfWork _unitOfWork, IHttpClientFactory _httpClientFactory) : IRequestHandler<GoogleLoginCommand, LoginResponse>
+public class GoogleLoginCommandHandler(ITokenUtils _tokenUtils, IIdentityUnitOfWork _unitOfWork, IGoogleAuthService _httpClientFactory) : IRequestHandler<GoogleLoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync(
-            $"https://www.googleapis.com/oauth2/v3/userinfo?access_token={request.Token}");
+        var googleUser = await _httpClientFactory.GetUserInfoAsync(request.Token, cancellationToken);
 
-        if (!response.IsSuccessStatusCode)
+        if (googleUser == null)
             throw new UnauthorizedAccessException("Invalid Google token.");
 
-        var json = await response.Content.ReadAsStringAsync();
-        var googleUser = JsonSerializer.Deserialize<GoogleUserInfoDto>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (googleUser == null || string.IsNullOrEmpty(googleUser.Email))
+        if (string.IsNullOrEmpty(googleUser.Email))
             throw new UnauthorizedAccessException("Failed to parse Google user.");
 
         var user = await _unitOfWork.UserManager.FindByEmailAsync(googleUser.Email);
